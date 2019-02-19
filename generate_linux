@@ -4,6 +4,10 @@
 # ----------------------------------------------------------------------
 QMAKE=qmake-qt5
 
+# make command options
+# --------------------
+MAKE_OPTS="-j2"
+
 #=========================================================================
 
 set -e
@@ -16,7 +20,7 @@ $QMAKE -makefile vpsplayer.pro
 echo -e "\n    -------------------------"
 echo      "[2] | Compiling application |"
 echo      "    -------------------------"
-make -j2
+make $MAKE_OPTS
 
 echo -e "\n    --------------------------"
 echo      "[3] | Stripping symbol table |"
