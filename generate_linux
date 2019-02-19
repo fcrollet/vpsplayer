@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# QT5 qmake utility (give full path if it is in a non standard location)
+# ----------------------------------------------------------------------
+QMAKE=qmake-qt5
+
+#=========================================================================
+
+set -e
+
+echo "    -----------------------"
+echo "[1] | Generating Makefile |"
+echo "    -----------------------"
+$QMAKE -makefile vpsplayer.pro
+
+echo -e "\n    -------------------------"
+echo      "[2] | Compiling application |"
+echo      "    -------------------------"
+make -j2
+
+echo -e "\n    --------------------------"
+echo      "[3] | Stripping symbol table |"
+echo      "    --------------------------"
+strip --strip-unneeded vpsplayer
+
+echo -e "\n    ------------------------------------------------------------"
+echo      "==> | Generation successfully completed                        |"
+echo      "    | The executable file \"vpsplayer\" has been generated.      |"
+echo      "    | Now you can:                                             |"
+echo      "    | - run ./vpsplayer to start VPS Player without installing |"
+echo      "    | - run \"make install\" as root                             |"
+echo      "    ------------------------------------------------------------"
+exit 0

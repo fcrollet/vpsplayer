@@ -1,0 +1,11 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="vps-64.png">icons/vps-64.png</file>
+    <file alias="qt-32.png">icons/qt-32.png</file>
+    <file alias="open-32.png">icons/open-32.png</file>
+    <file alias="play-32.png">icons/play-32.png</file>
+    <file alias="pause-32.png">icons/pause-32.png</file>
+    <file alias="stop-32.png">icons/stop-32.png</file>
+    <file alias="quit-32.png">icons/quit-32.png</file>
+</qresource>
+</RCC>

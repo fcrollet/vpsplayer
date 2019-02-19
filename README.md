@@ -1,0 +1,16 @@
+# VPS Player
+
+VPS Player is an audio player that allows to independantly adjust pitch and speed on the fly.
+
+## License
+
+VPS Player is licensed under GPL version 3.0.
+See COPYING in the same directory or http://www.gnu.org/licenses/gpl.html
+
+## Requirements
+
+* **Qt5** (version 5.8 or above, *base* and *multimedia* modules) : https://www.qt.io
+* **Rubberband** library (version 1.7 or above) : https://www.breakfastquay.com/rubberband/
+
+To build from source:
+* a **C++14 compiler** (for instance GCC 5 or newer)
