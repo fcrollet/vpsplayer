@@ -9,8 +9,9 @@ See COPYING in the same directory or http://www.gnu.org/licenses/gpl.html
 
 ## Requirements
 
-* **Qt5** (version 5.8 or above, *base* and *multimedia* modules) : https://www.qt.io
-* **Rubberband** library (version 1.7 or above) : https://www.breakfastquay.com/rubberband/
+* **Qt5** (version 5.8 or above, *base* and *multimedia* modules): https://www.qt.io
+* **Rubberband** library (version 1.7 or above): https://www.breakfastquay.com/rubberband/
 
 To build from source:
 * a **C++14 compiler** (for instance GCC 5 or newer)
+* [**pkg-config**](https://www.freedesktop.org/wiki/Software/pkg-config/) or [**pkgconf**](https://pkgconf.org/)
