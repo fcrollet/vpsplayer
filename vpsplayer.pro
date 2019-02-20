@@ -15,7 +15,7 @@ RESOURCES = icons.qrc
 TARGET = vpsplayer
 
 documentation.path = /usr/local/doc/VPSPlayer
-documentation.files = COPYING README
+documentation.files = COPYING README.md
 INSTALLS += documentation
 
 target.path = /usr/local/bin
