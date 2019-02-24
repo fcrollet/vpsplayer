@@ -96,7 +96,7 @@ PlayerWindow::PlayerWindow(const QString &filename)
   
   button_open = new QPushButton(QIcon(":/open-32.png"), "Open file");
   button_open->setToolTip("Ctrl+O");
-  button_cancel = new QPushButton("Cancel");
+  button_cancel = new QPushButton(QIcon(":/cancel-32.png"), "Cancel");
   button_play = new QPushButton(QIcon(":/play-32.png"), "Play");
   button_pause = new QPushButton(QIcon(":/pause-32.png"), "Pause");
   button_stop = new QPushButton(QIcon(":/stop-32.png"), "Stop");
