@@ -4,17 +4,17 @@ QT += widgets multimedia
 PKGCONFIG += rubberband
 DEFINES += VERSION_STRING=\\\"devel_1.0_pre\\\"
 QMAKE_CXXFLAGS_RELEASE = "-O2 -march=native -fvisibility-inlines-hidden -pipe -fno-plt"
-HEADERS = Audio_player.h \
-          Player_window.h \
-          Playing_progress.h
-SOURCES = main.cpp \
-          Audio_player.cpp \
-          Player_window.cpp \
-          Playing_progress.cpp
+HEADERS = src/Audio_player.h \
+          src/Player_window.h \
+          src/Playing_progress.h
+SOURCES = src/main.cpp \
+          src/Audio_player.cpp \
+          src/Player_window.cpp \
+          src/Playing_progress.cpp
 RESOURCES = icons.qrc
 TARGET = vpsplayer
 
-documentation.path = /usr/local/doc/VPSPlayer
+documentation.path = /usr/local/share/doc/VPSPlayer
 documentation.files = COPYING README.md
 INSTALLS += documentation
 
