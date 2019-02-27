@@ -19,7 +19,6 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QStatusBar>
-#include <QString>
 #include <QStringList>
 #include <QTime>
 #include <QVBoxLayout>
