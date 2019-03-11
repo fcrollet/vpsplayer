@@ -4,6 +4,9 @@ QT += widgets multimedia
 PKGCONFIG += rubberband
 DEFINES += VERSION_STRING=\\\"devel_1.0_pre\\\"
 QMAKE_CXXFLAGS_RELEASE = "-O2 -march=native -fvisibility-inlines-hidden -pipe -fno-plt"
+MOC_DIR = build_tmp
+OBJECTS_DIR = build_tmp
+RCC_DIR = build_tmp
 HEADERS = src/Audio_player.h \
           src/Player_window.h \
           src/Playing_progress.h
