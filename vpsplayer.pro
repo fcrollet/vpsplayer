@@ -19,7 +19,13 @@ TARGET = vpsplayer
 
 documentation.path = /usr/local/share/doc/VPSPlayer
 documentation.files = COPYING README.md
-INSTALLS += documentation
 
 target.path = /usr/local/bin
-INSTALLS += target
+
+icon.path = /usr/share/pixmaps
+icon.files = icons/vps-64.png
+
+desktop.path = /usr/share/applications
+desktop.files = vpsplayer.desktop
+
+INSTALLS += target documentation icon desktop
