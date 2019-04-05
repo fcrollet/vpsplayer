@@ -15,7 +15,7 @@ set -e
 echo "    -----------------------"
 echo "[1] | Generating Makefile |"
 echo "    -----------------------"
-$QMAKE -makefile vpsplayer.pro
+$QMAKE -makefile PREFIX="/usr/local" QMAKE_CXXFLAGS_RELEASE="-O2 -march=native -fvisibility-inlines-hidden -pipe -fno-plt -g0" vpsplayer.pro
 
 echo -e "\n    -------------------------"
 echo      "[2] | Compiling application |"
@@ -32,6 +32,6 @@ echo      "==> | Generation successfully completed                        |"
 echo      "    | The executable file \"vpsplayer\" has been generated.      |"
 echo      "    | Now you can:                                             |"
 echo      "    | - run ./vpsplayer to start VPS Player without installing |"
-echo      "    | - run \"make install\" as root                             |"
+echo      "    | - run \"make install\" as root to install into /usr/local  |"
 echo      "    ------------------------------------------------------------"
 exit 0
