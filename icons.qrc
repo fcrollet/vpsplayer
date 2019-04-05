@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file alias="vps-64.png">icons/vps-64.png</file>
+    <file alias="vps-64.png">icons/64x64/org.fcrollet.VPSPlayer.png</file>
     <file alias="qt-32.png">icons/qt-32.png</file>
     <file alias="open-32.png">icons/open-32.png</file>
     <file alias="cancel-32.png">icons/cancel-32.png</file>

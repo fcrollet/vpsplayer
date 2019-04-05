@@ -21,10 +21,13 @@ documentation.files = COPYING README.md
 
 target.path = $$PREFIX/bin
 
-icon.path = $$PREFIX/share/icons/hicolor/64x64/apps
-icon.files = icons/vps-64.png
+icon64.path = $$PREFIX/share/icons/hicolor/64x64/apps
+icon64.files = icons/64x64/org.fcrollet.VPSPlayer.png
+
+icon128.path = $$PREFIX/share/icons/hicolor/128x128/apps
+icon128.files = icons/128x128/org.fcrollet.VPSPlayer.png
 
 desktop.path = $$PREFIX/share/applications
-desktop.files = vpsplayer.desktop
+desktop.files = org.fcrollet.VPSPlayer.desktop
 
-INSTALLS += target documentation icon desktop
+INSTALLS += target documentation icon64 icon128 desktop
