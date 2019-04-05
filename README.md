@@ -17,3 +17,7 @@ To build from source:
 * a **C++14 compiler** (for instance GCC 5 or newer)
 * [**pkg-config**](https://www.freedesktop.org/wiki/Software/pkg-config/) or [**pkgconf**](http://pkgconf.org/)
 * **qmake** (part of Qt5)
+
+## How to install
+
+See latest installation instructions on [https://github.com/fcrollet/vpsplayer/wiki/Installation](https://github.com/fcrollet/vpsplayer/wiki/Installation)
