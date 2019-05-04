@@ -19,6 +19,7 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QStatusBar>
+#include <QStringBuilder>
 #include <QStringList>
 #include <QTime>
 #include <QVBoxLayout>
@@ -179,14 +180,14 @@ PlayerWindow::PlayerWindow(const QString &filename)
     QFileInfo file_info(filename);
     
     if (file_info.exists() && file_info.isFile()) {
-      setWindowTitle("VPS Player [" + file_info.fileName() + "]");
+      setWindowTitle("VPS Player [" % file_info.fileName() % "]");
       music_directory = file_info.canonicalPath();
 
       audio_player->decodeFile(file_info.canonicalFilePath());
     }
 
     else
-      QMessageBox::critical(this, "File not found", "\"" + file_info.filePath() + "\" is not a valid file.", QMessageBox::Ok);
+      QMessageBox::critical(this, "File not found", "\"" % file_info.filePath() % "\" is not a valid file.", QMessageBox::Ok);
   }
 }
 
@@ -257,7 +258,7 @@ void PlayerWindow::openFile()
     return;
 
   QFileInfo file_info(selected_file);
-  setWindowTitle("VPS Player [" + file_info.fileName() + "]");
+  setWindowTitle("VPS Player [" % file_info.fileName() % "]");
   music_directory = file_info.canonicalPath();
 
   audio_player->decodeFile(selected_file);
