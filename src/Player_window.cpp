@@ -32,14 +32,16 @@ PlayerWindow::PlayerWindow(const QString &filename)
 {
   audio_player = new AudioPlayer(this);
 
+  const QIcon open_icon(QStringLiteral(":/open-32.png"));
+  
   QMenu *menu_file = menuBar()->addMenu("&File");
-  QMenu *menu_help = menuBar()->addMenu("&?");
-  action_open = new QAction(QIcon(":/open-32.png"), "&Open", this);
-  action_open->setShortcut(QKeySequence("Ctrl+O"));
-  action_quit = new QAction(QIcon(":/quit-32.png"), "&Quit", this);
-  action_quit->setShortcut(QKeySequence("Ctrl+Q"));
-  action_about = new QAction(QIcon(":/vps-64.png"), "&About", this);
-  action_about_qt = new QAction(QIcon(":/qt-32.png"), "About Q&t", this);
+  QMenu *menu_help = menuBar()->addMenu(QStringLiteral("&?"));
+  action_open = new QAction(open_icon, "&Open", this);
+  action_open->setShortcut(QKeySequence(QStringLiteral("Ctrl+O")));
+  action_quit = new QAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", this);
+  action_quit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
+  action_about = new QAction(QIcon(QStringLiteral(":/vps-64.png")), "&About", this);
+  action_about_qt = new QAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", this);
   menu_file->addAction(action_open);
   menu_file->addSeparator();
   menu_file->addAction(action_quit);
@@ -94,12 +96,12 @@ PlayerWindow::PlayerWindow(const QString &filename)
   layout_sliders->addWidget(label_speed_value, 1, 2);
   layout_sliders->addWidget(lcd_volume, 2, 2);
   
-  button_open = new QPushButton(QIcon(":/open-32.png"), "Open file");
-  button_open->setToolTip("Ctrl+O");
-  button_cancel = new QPushButton(QIcon(":/cancel-32.png"), "Cancel");
-  button_play = new QPushButton(QIcon(":/play-32.png"), "Play");
-  button_pause = new QPushButton(QIcon(":/pause-32.png"), "Pause");
-  button_stop = new QPushButton(QIcon(":/stop-32.png"), "Stop");
+  button_open = new QPushButton(open_icon, "Open file");
+  button_open->setToolTip(QStringLiteral("Ctrl+O"));
+  button_cancel = new QPushButton(QIcon(QStringLiteral(":/cancel-32.png")), "Cancel");
+  button_play = new QPushButton(QIcon(QStringLiteral(":/play-32.png")), "Play");
+  button_pause = new QPushButton(QIcon(QStringLiteral(":/pause-32.png")), "Pause");
+  button_stop = new QPushButton(QIcon(QStringLiteral(":/stop-32.png")), "Stop");
   QHBoxLayout *layout_buttons = new QHBoxLayout;
   layout_buttons->addWidget(button_open);
   layout_buttons->addWidget(button_cancel);
@@ -163,7 +165,7 @@ PlayerWindow::PlayerWindow(const QString &filename)
   connect(check_high_quality, &QAbstractButton::toggled, audio_player, &AudioPlayer::updateOptionHighQuality);
   connect(check_formant_preserved, &QAbstractButton::toggled, audio_player, &AudioPlayer::updateOptionFormantPreserved);
   connect(audio_player, &AudioPlayer::statusChanged, this, &PlayerWindow::updateStatus);
-  connect(audio_player, &AudioPlayer::loadingProgressChanged, [=](int progress){ label_loading_progress->setText(QString("%1 \%").arg(progress)); });
+  connect(audio_player, &AudioPlayer::loadingProgressChanged, [=](int progress){ label_loading_progress->setText(QStringLiteral("%1 \%").arg(progress)); });
   connect(audio_player, &AudioPlayer::durationChanged, this, &PlayerWindow::updateDuration);
   connect(audio_player, &AudioPlayer::readingPositionChanged, this, &PlayerWindow::updateReadingPosition);
   connect(audio_player, &AudioPlayer::audioDecodingError, this, &PlayerWindow::displayAudioDecodingError);
@@ -322,7 +324,7 @@ QString PlayerWindow::convertMSecToText(int milliseconds) const
   if (milliseconds < 0)
     return QString("--:--:--");
   else
-    return QTime(0, 0).addMSecs(milliseconds).toString("HH:mm:ss");
+    return QTime(0, 0).addMSecs(milliseconds).toString(QStringLiteral("HH:mm:ss"));
 }
 
 
@@ -330,7 +332,7 @@ QString PlayerWindow::convertMSecToText(int milliseconds) const
 void PlayerWindow::updateSpeed(int speed)
 {
   qreal speed_ratio = qPow(qreal(2.0), speed / qreal(12.0));
-  label_speed_value->setText(QString("x %1").arg(speed_ratio, 0, 'f', 2));
+  label_speed_value->setText(QStringLiteral("x %1").arg(speed_ratio, 0, 'f', 2));
   audio_player->updateSpeed(static_cast<double>(speed_ratio));
 }
 

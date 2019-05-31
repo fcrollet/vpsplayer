@@ -18,9 +18,9 @@
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  QCoreApplication::setApplicationName("VPS Player");
-  QCoreApplication::setApplicationVersion(VERSION_STRING);
-  app.setWindowIcon(QIcon(":/vps-64.png"));
+  QCoreApplication::setApplicationName(QStringLiteral("VPS Player"));
+  QCoreApplication::setApplicationVersion(QStringLiteral(VERSION_STRING));
+  app.setWindowIcon(QIcon(QStringLiteral(":/vps-64.png")));
   
   QCommandLineParser parser;
   parser.setApplicationDescription("High quality Variable Pitch and Speed audio player");
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   QStringList arguments = parser.positionalArguments();
   QString filename;
   if (arguments.isEmpty())
-    filename = "";
+    filename = QString();
   else
     filename = arguments.first();
   
