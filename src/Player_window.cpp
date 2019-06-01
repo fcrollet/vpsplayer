@@ -322,7 +322,7 @@ void PlayerWindow::updateReadingPosition(int position)
 QString PlayerWindow::convertMSecToText(int milliseconds) const
 {
   if (milliseconds < 0)
-    return QString("--:--:--");
+    return QStringLiteral("--:--:--");
   else
     return QTime(0, 0).addMSecs(milliseconds).toString(QStringLiteral("HH:mm:ss"));
 }
