@@ -349,7 +349,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(false);
     button_pause->setEnabled(false);
     button_stop->setEnabled(false);
-    setWindowTitle("VPS Player");
+    setWindowTitle(QStringLiteral("VPS Player"));
     label_loading_progress->clear();
     break;
   case AudioPlayer::Loading :
