@@ -30,9 +30,7 @@ int main(int argc, char *argv[])
   parser.process(app);
   QStringList arguments = parser.positionalArguments();
   QString filename;
-  if (arguments.isEmpty())
-    filename = QString();
-  else
+  if (!arguments.isEmpty())
     filename = arguments.first();
   
   PlayerWindow window(filename);
