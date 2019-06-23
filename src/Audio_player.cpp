@@ -341,6 +341,9 @@ void AudioPlayer::fillAudioBuffer()
 // End audio file decoding
 void AudioPlayer::finishDecoding()
 {
+  decoded_samples->squeeze();
+  sample_positions->squeeze();
+
   emit loadingProgressChanged(100);
   disconnect(audio_decoder, 0, 0, 0);
   audio_decoder->deleteLater();
