@@ -182,7 +182,6 @@ PlayerWindow::PlayerWindow(const QString &filename)
     if (file_info.exists() && file_info.isFile())
       openFile(file_info);
     else
-      //QMessageBox::critical(this, "File not found", "\"" % file_info.filePath() % "\" is not a valid file.", QMessageBox::Ok);
       QMessageBox::critical(this, "File not found", QString("\"%1\" is not a valid file.").arg(file_info.filePath()), QMessageBox::Ok);
   }
 }
