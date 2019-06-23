@@ -273,10 +273,10 @@ void AudioPlayer::fillAudioBuffer()
 	return;
       }
       
-      QAudioBuffer current_audio_buffer = decoded_samples->at(reading_index);
-      const float *audio_buffer_data = current_audio_buffer.constData<float>();
+      const QAudioBuffer *current_audio_buffer = &(decoded_samples->at(reading_index));
+      const float *audio_buffer_data = current_audio_buffer->constData<float>();
       
-      int nb_input_frames = current_audio_buffer.frameCount();
+      int nb_input_frames = current_audio_buffer->frameCount();
       int nb_channels = target_format.channelCount();
       float **stretcher_input = new float*[nb_channels];
       for (int i = 0; i < nb_channels; i++){
