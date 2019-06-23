@@ -18,7 +18,6 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QStatusBar>
-#include <QStringBuilder>
 #include <QStringList>
 #include <QTime>
 #include <QVBoxLayout>
@@ -183,7 +182,8 @@ PlayerWindow::PlayerWindow(const QString &filename)
     if (file_info.exists() && file_info.isFile())
       openFile(file_info);
     else
-      QMessageBox::critical(this, "File not found", "\"" % file_info.filePath() % "\" is not a valid file.", QMessageBox::Ok);
+      //QMessageBox::critical(this, "File not found", "\"" % file_info.filePath() % "\" is not a valid file.", QMessageBox::Ok);
+      QMessageBox::critical(this, "File not found", QString("\"%1\" is not a valid file.").arg(file_info.filePath()), QMessageBox::Ok);
   }
 }
 
@@ -247,7 +247,7 @@ void PlayerWindow::displayAudioDeviceError(QAudio::Error error)
 // Open file given in parameter
 void PlayerWindow::openFile(const QFileInfo &file_info)
 {
-  setWindowTitle("VPS Player [" % file_info.fileName() % "]");
+  setWindowTitle(QStringLiteral("VPS Player [%1]").arg(file_info.fileName()));
   music_directory = file_info.canonicalPath();
 
   audio_player->decodeFile(file_info.canonicalFilePath());
