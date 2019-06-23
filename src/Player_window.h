@@ -54,7 +54,7 @@ private:
   QString music_directory;
   
 public:
-  PlayerWindow(const QString &filename = ""); // Constructor
+  PlayerWindow(const QString &filename = QString()); // Constructor
   ~PlayerWindow(); // Destructor
 
 private:
