@@ -9,7 +9,6 @@
 #include <QAudio>
 #include <QDir>
 #include <QFileDialog>
-#include <QFileInfo>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QIcon>
@@ -149,11 +148,11 @@ PlayerWindow::PlayerWindow(const QString &filename)
   adjustSize();
   setMaximumHeight(height());
 
-  connect(action_open, &QAction::triggered, this, &PlayerWindow::openFile);
+  connect(action_open, &QAction::triggered, this, &PlayerWindow::openFileFromSelector);
   connect(action_quit, &QAction::triggered, this, &PlayerWindow::close);
   connect(action_about, &QAction::triggered, this, &PlayerWindow::showAbout);
   connect(action_about_qt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this, "About Qt"); });
-  connect(button_open, &QPushButton::clicked, this, &PlayerWindow::openFile);
+  connect(button_open, &QPushButton::clicked, this, &PlayerWindow::openFileFromSelector);
   connect(button_cancel, &QPushButton::clicked, audio_player, &AudioPlayer::cancelDecoding);
   connect(button_play, &QPushButton::clicked, this, &PlayerWindow::playAudio);
   connect(button_pause, &QPushButton::clicked, audio_player, &AudioPlayer::pausePlaying);
@@ -181,13 +180,8 @@ PlayerWindow::PlayerWindow(const QString &filename)
   if (!filename.isEmpty()) {
     QFileInfo file_info(filename);
     
-    if (file_info.exists() && file_info.isFile()) {
-      setWindowTitle("VPS Player [" % file_info.fileName() % "]");
-      music_directory = file_info.canonicalPath();
-
-      audio_player->decodeFile(file_info.canonicalFilePath());
-    }
-
+    if (file_info.exists() && file_info.isFile())
+      openFile(file_info);
     else
       QMessageBox::critical(this, "File not found", "\"" % file_info.filePath() % "\" is not a valid file.", QMessageBox::Ok);
   }
@@ -250,20 +244,24 @@ void PlayerWindow::displayAudioDeviceError(QAudio::Error error)
 }
 
 
+// Open file given in parameter
+void PlayerWindow::openFile(const QFileInfo &file_info)
+{
+  setWindowTitle("VPS Player [" % file_info.fileName() % "]");
+  music_directory = file_info.canonicalPath();
+
+  audio_player->decodeFile(file_info.canonicalFilePath());
+}
+
+
 // Open a new file (chosen with a file selector)
-void PlayerWindow::openFile()
+void PlayerWindow::openFileFromSelector()
 {
   QString audio_files_filter("Common audio files (*.aac *.flac *.m4a *.mp3 *.ogg *.wav *.wma)");
   const QString selected_file = QFileDialog::getOpenFileName(this, "Select audio file", music_directory, audio_files_filter + ";;All files (*)", &audio_files_filter);
 
-  if (selected_file.isEmpty())
-    return;
-
-  QFileInfo file_info(selected_file);
-  setWindowTitle("VPS Player [" % file_info.fileName() % "]");
-  music_directory = file_info.canonicalPath();
-
-  audio_player->decodeFile(selected_file);
+  if (!selected_file.isEmpty())
+    openFile(QFileInfo(selected_file));
 }
 
 

@@ -11,6 +11,7 @@
 #include <QMainWindow>
 #include <QAction>
 #include <QCheckBox>
+#include <QFileInfo>
 #include <QLabel>
 #include <QLCDNumber>
 #include <QPushButton>
@@ -59,7 +60,8 @@ public:
 private:
   void displayAudioDecodingError(QAudioDecoder::Error error); // Prompt an error popup for an audio decoding error
   void displayAudioDeviceError(QAudio::Error error); // Prompt an error popup for an audio device error
-  void openFile(); // Open a new file (chosen with a file selector)
+  void openFile(const QFileInfo &file_info); // Open file given in parameter
+  void openFileFromSelector(); // Open a new file (chosen with a file selector)
   void playAudio(); // Start or resume audio playing
   void showAbout(); // Displays "About" dialog window
   void updateDuration(int duration); // Updates total file duration
