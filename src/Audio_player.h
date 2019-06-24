@@ -45,7 +45,6 @@ private:
   QAudioFormat target_format;
   QAudioDecoder *audio_decoder;
   std::unique_ptr<QVector<QAudioBuffer>> decoded_samples;
-  std::unique_ptr<QVector<int>> sample_positions;
   QAudioOutput *audio_output;
   QIODevice *output_buffer;
   QBuffer *temp_buffer;

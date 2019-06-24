@@ -64,7 +64,6 @@ void AudioPlayer::decodeFile(const QString &filename)
   emit loadingProgressChanged(0);
 
   decoded_samples = std::make_unique<QVector<QAudioBuffer>>();
-  sample_positions = std::make_unique<QVector<int>>();
 
   audio_decoder = new QAudioDecoder(this);
   QAudioFormat decode_format(target_format);
@@ -96,7 +95,7 @@ void AudioPlayer::moveReadingPosition(int position)
     return;
   
   reading_index = 0;
-  while ((reading_index < sample_positions->size()) && (sample_positions->at(reading_index) < position))
+  while ((reading_index < decoded_samples->size()) && (static_cast<int>(decoded_samples->at(reading_index).startTime() / 1000) < position))
     reading_index++;
 
   emit readingPositionChanged(position);
@@ -248,7 +247,6 @@ void AudioPlayer::abortDecoding(QAudioDecoder::Error error)
   disconnect(audio_decoder, 0, 0, 0);
   audio_decoder->deleteLater();
   decoded_samples.reset();
-  sample_positions.reset();
   status = AudioPlayer::NoFileLoaded;
   emit statusChanged(status);
   emit durationChanged(-1);
@@ -322,8 +320,8 @@ void AudioPlayer::fillAudioBuffer()
 	temp_buffer->open(QIODevice::ReadOnly);
 	temp_buffer->seek(0);
       }
-      
-      emit readingPositionChanged(sample_positions->at(reading_index));
+
+      emit readingPositionChanged(static_cast<int>(current_audio_buffer->startTime() / 1000));
       reading_index++;
     }
 
@@ -342,7 +340,6 @@ void AudioPlayer::fillAudioBuffer()
 void AudioPlayer::finishDecoding()
 {
   decoded_samples->squeeze();
-  sample_positions->squeeze();
 
   emit loadingProgressChanged(100);
   disconnect(audio_decoder, 0, 0, 0);
@@ -377,7 +374,5 @@ void AudioPlayer::manageAudioOutputState(QAudio::State state)
 void AudioPlayer::readDecoderBuffer()
 {
   decoded_samples->append(audio_decoder->read());
-  int sample_position = static_cast<int>(audio_decoder->position());
-  sample_positions->append(sample_position);
-  emit loadingProgressChanged((100 * sample_position) / static_cast<int>(audio_decoder->duration()));
+  emit loadingProgressChanged(static_cast<int>((100 * audio_decoder->position()) / audio_decoder->duration()));
 }
