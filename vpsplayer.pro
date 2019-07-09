@@ -16,6 +16,10 @@ SOURCES = src/main.cpp \
 RESOURCES = icons.qrc
 TARGET = vpsplayer
 
+isEmpty(PREFIX) {
+  PREFIX = /usr
+}
+
 documentation.path = $$PREFIX/share/doc/VPSPlayer
 documentation.files = COPYING README.md
 
