@@ -2,6 +2,9 @@
 
 VPS Player is an audio player that allows to independantly adjust pitch and speed on the fly.
 
+![Screenshot 1](https://github.com/fcrollet/vpsplayer/wiki/images/screenshot-01.png)
+![Screenshot 2](https://github.com/fcrollet/vpsplayer/wiki/images/screenshot-02.png)
+
 ## License
 
 VPS Player is licensed under GPL version 3.0.
