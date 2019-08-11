@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 François CROLLET -->
+<component type="desktop-application">
+  <id>com.github.fcrollet.vpsplayer</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>VPS Player</name>
+  <summary>High quality Variable Pitch and Speed audio player</summary>
+  <description>
+    <p>VPS Player is an audio player that allows to independantly adjust pitch and speed on the fly.</p>
+  </description>
+  <launchable type="desktop-id">com.github.fcrollet.vpsplayer.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image type="source">https://github.com/fcrollet/vpsplayer/wiki/images/screenshot-01.png</image>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://github.com/fcrollet/vpsplayer/wiki/images/screenshot-02.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/fcrollet/vpsplayer</url>
+  <url type="bugtracker">https://github.com/fcrollet/vpsplayer/issues</url>
+  <developer_name>François CROLLET</developer_name>
+  <update_contact>fcrollet_AT_gmail.com</update_contact>
+  <releases>
+    <release version="1.0" date="2019-07-10">
+      <description>
+	<p>This release is the first VPS Player public release.</p>
+      </description>
+      <url>https://github.com/fcrollet/vpsplayer/releases/tag/v1.0</url>
+    </release>
+  </releases>
+  <translation/>
+</component>

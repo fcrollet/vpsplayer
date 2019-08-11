@@ -34,4 +34,7 @@ icon128.files = icons/128x128/com.github.fcrollet.vpsplayer.png
 desktop.path = $$PREFIX/share/applications
 desktop.files = com.github.fcrollet.vpsplayer.desktop
 
-INSTALLS += target documentation icon64 icon128 desktop
+appinfo.path = $$PREFIX/share/metainfo
+appinfo.files = com.github.fcrollet.vpsplayer.appdata.xml
+
+INSTALLS += target documentation icon64 icon128 desktop appinfo
