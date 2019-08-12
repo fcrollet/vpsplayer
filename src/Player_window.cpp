@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QGridLayout>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QKeySequence>
@@ -93,6 +94,17 @@ PlayerWindow::PlayerWindow(const QString &filename)
   layout_sliders->addWidget(spinbox_pitch, 0, 2);
   layout_sliders->addWidget(label_speed_value, 1, 2);
   layout_sliders->addWidget(lcd_volume, 2, 2);
+
+  check_high_quality = new QCheckBox("High quality (uses more CPU)");
+  check_high_quality->setToolTip("Use the highest quality method for pitch shifting. This method may use much more CPU, especially for large pitch shift.");
+  check_formant_preserved = new QCheckBox("Preserve formant shape (spectral envelope)");
+  check_formant_preserved->setToolTip("Preserve the spectral envelope of the original signal. This permits shifting the note frequency without so substantially affecting the perceived pitch profile of the voice or instrument.");
+  QVBoxLayout *layout_settings = new QVBoxLayout;
+  layout_settings->addLayout(layout_sliders);
+  layout_settings->addWidget(check_high_quality);
+  layout_settings->addWidget(check_formant_preserved);
+  QGroupBox *groupbox_settings = new QGroupBox("Settings");
+  groupbox_settings->setLayout(layout_settings);
   
   button_open = new QPushButton(open_icon, "Open file");
   button_open->setToolTip(QStringLiteral("Ctrl+O"));
@@ -114,18 +126,16 @@ PlayerWindow::PlayerWindow(const QString &filename)
   layout_progress->addWidget(label_reading_progress);
   layout_progress->addWidget(progress_playing);
   layout_progress->addWidget(label_duration);
+
+  QVBoxLayout *layout_player = new QVBoxLayout;
+  layout_player->addLayout(layout_buttons);
+  layout_player->addLayout(layout_progress);
+  QGroupBox *groupbox_player = new QGroupBox("Player");
+  groupbox_player->setLayout(layout_player);
   
-  check_high_quality = new QCheckBox("High quality (uses more CPU)");
-  check_high_quality->setToolTip("Use the highest quality method for pitch shifting. This method may use much more CPU, especially for large pitch shift.");
-  check_formant_preserved = new QCheckBox("Preserve formant shape (spectral envelope)");
-  check_formant_preserved->setToolTip("Preserve the spectral envelope of the original signal. This permits shifting the note frequency without so substantially affecting the perceived pitch profile of the voice or instrument.");
   QVBoxLayout *layout_main = new QVBoxLayout;
-  layout_main->addLayout(layout_sliders);
-  layout_main->addWidget(check_high_quality);
-  layout_main->addWidget(check_formant_preserved);
-  layout_main->addLayout(layout_buttons);
-  layout_main->addLayout(layout_progress);
-  
+  layout_main->addWidget(groupbox_settings);
+  layout_main->addWidget(groupbox_player);
   QWidget *widget_main = new QWidget;
   widget_main->setLayout(layout_main);
   setCentralWidget(widget_main);
