@@ -55,8 +55,11 @@ void AudioPlayer::cancelDecoding()
 // Decode an audio file
 void AudioPlayer::decodeFile(const QString &filename)
 {
-  if ((status != AudioPlayer::Stopped) && (status != AudioPlayer::NoFileLoaded))
+  if (status == AudioPlayer::Loading)
     return;
+  
+  if ((status == AudioPlayer::Paused) || (status == AudioPlayer::Playing))
+    stopPlaying();
   
   status = AudioPlayer::Loading;
   emit statusChanged(status);

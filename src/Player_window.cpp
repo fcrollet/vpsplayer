@@ -379,8 +379,8 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     break;
   case AudioPlayer::Paused :
     label_status->setText("Paused");
-    action_open->setEnabled(false);
-    button_open->setEnabled(false);
+    action_open->setEnabled(true);
+    button_open->setEnabled(true);
     button_cancel->setEnabled(false);
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
@@ -388,8 +388,8 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     break;
   case AudioPlayer::Playing :
     label_status->setText("Playing");
-    action_open->setEnabled(false);
-    button_open->setEnabled(false);
+    action_open->setEnabled(true);
+    button_open->setEnabled(true);
     button_cancel->setEnabled(false);
     button_play->setEnabled(false);
     button_pause->setEnabled(true);
