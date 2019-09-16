@@ -9,6 +9,7 @@
 #include <QAudio>
 #include <QDir>
 #include <QFileDialog>
+#include <QFont>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
