@@ -32,6 +32,7 @@ PlayerWindow::PlayerWindow(const QString &filename)
   audio_player = new AudioPlayer(this);
 
   const QIcon open_icon(QStringLiteral(":/open-32.png"));
+  const QFont fixed_font(QStringLiteral("monospace"));
   
   QMenu *menu_file = menuBar()->addMenu("&File");
   QMenu *menu_help = menuBar()->addMenu(QStringLiteral("&?"));
@@ -49,6 +50,7 @@ PlayerWindow::PlayerWindow(const QString &filename)
   
   label_status = new QLabel;
   label_loading_progress = new QLabel;
+  label_loading_progress->setFont(fixed_font);
   statusBar()->addWidget(label_status, 1);
   statusBar()->addPermanentWidget(label_loading_progress, 0);
   
@@ -121,7 +123,9 @@ PlayerWindow::PlayerWindow(const QString &filename)
 
   progress_playing = new PlayingProgress;
   label_reading_progress = new QLabel;
+  label_reading_progress->setFont(fixed_font);
   label_duration = new QLabel;
+  label_duration->setFont(fixed_font);
   QHBoxLayout *layout_progress = new QHBoxLayout;
   layout_progress->addWidget(label_reading_progress);
   layout_progress->addWidget(progress_playing);
