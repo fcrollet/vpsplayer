@@ -23,6 +23,17 @@
   <developer_name>François CROLLET</developer_name>
   <update_contact>fcrollet_AT_gmail.com</update_contact>
   <releases>
+    <release version="1.0.1" date="2019-09-23">
+      <description>
+	<p>This release is a minor update:</p>
+	<ul>
+	  <li>Small UI improvements</li>
+	  <li>You needn't stop playback to open a new file</li>
+	  <li>Source archive includes an AppStream metadata file</li>
+	</ul>
+      </description>
+      <url>https://github.com/fcrollet/vpsplayer/releases/tag/v1.0.1</url>
+    </release>
     <release version="1.0" date="2019-07-10">
       <description>
 	<p>This release is the first VPS Player public release.</p>
