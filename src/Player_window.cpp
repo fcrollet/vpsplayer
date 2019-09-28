@@ -13,7 +13,6 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
-#include <QIcon>
 #include <QKeySequence>
 #include <QMenu>
 #include <QMenuBar>
@@ -28,7 +27,7 @@
 
 
 // Constructor
-PlayerWindow::PlayerWindow(const QString &filename)
+PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
 {
   audio_player = new AudioPlayer(this);
 
@@ -41,7 +40,7 @@ PlayerWindow::PlayerWindow(const QString &filename)
   action_open->setShortcut(QKeySequence(QStringLiteral("Ctrl+O")));
   action_quit = new QAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", this);
   action_quit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
-  action_about = new QAction(QIcon(QStringLiteral(":/vps-64.png")), "&About", this);
+  action_about = new QAction(app_icon, "&About", this);
   action_about_qt = new QAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", this);
   menu_file->addAction(action_open);
   menu_file->addSeparator();

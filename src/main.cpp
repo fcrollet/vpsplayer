@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   QCoreApplication::setApplicationName(QStringLiteral("VPS Player"));
   QCoreApplication::setApplicationVersion(QStringLiteral(VERSION_STRING));
-  app.setWindowIcon(QIcon(QStringLiteral(":/vps-64.png")));
+  QIcon app_icon(QStringLiteral(":/vps-64.png"));
+  app.setWindowIcon(app_icon);
   
   QCommandLineParser parser;
   parser.setApplicationDescription("High quality Variable Pitch and Speed audio player");
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
   if (!arguments.isEmpty())
     filename = arguments.first();
   
-  PlayerWindow window(filename);
+  PlayerWindow window(app_icon, filename);
   window.show();
   return app.exec();
 }
