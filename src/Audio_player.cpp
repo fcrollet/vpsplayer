@@ -157,8 +157,8 @@ void AudioPlayer::startPlaying()
 								time_ratio,
 								pitch_scale);
   int max_sample_count = 0;
-  for (int i =0; i < decoded_samples->size(); i++){
-    int sample_count = decoded_samples->at(i).sampleCount();
+  for (QAudioBuffer const& audio_buffer : *decoded_samples) {
+    int sample_count = audio_buffer.sampleCount();
     if (sample_count > max_sample_count)
       max_sample_count = sample_count;
   }
