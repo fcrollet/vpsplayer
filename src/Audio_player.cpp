@@ -98,7 +98,8 @@ void AudioPlayer::moveReadingPosition(int position)
     return;
   
   reading_index = 0;
-  while ((reading_index < decoded_samples->size()) && (static_cast<int>(decoded_samples->at(reading_index).startTime() / 1000) < position))
+  const int index_limit = decoded_samples->size();
+  while ((reading_index < index_limit) && (static_cast<int>(decoded_samples->at(reading_index).startTime() / 1000) < position))
     reading_index++;
 
   emit readingPositionChanged(position);
