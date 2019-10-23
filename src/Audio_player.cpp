@@ -98,8 +98,7 @@ void AudioPlayer::moveReadingPosition(int position)
     return;
   
   reading_index = 0;
-  const int index_limit = decoded_samples->size();
-  while ((reading_index < index_limit) && (static_cast<int>(decoded_samples->at(reading_index).startTime() / 1000) < position))
+  while ((reading_index < nb_audio_buffers) && (static_cast<int>(decoded_samples->at(reading_index).startTime() / 1000) < position))
     reading_index++;
 
   emit readingPositionChanged(position);
@@ -270,7 +269,7 @@ void AudioPlayer::fillAudioBuffer()
 
   while (bytes_processed < bytes_needed) {
     while (temp_buffer->atEnd()){
-      if (reading_index >= decoded_samples->size()) {
+      if (reading_index >= nb_audio_buffers) {
 	no_more_data = true;
 	return;
       }
@@ -287,7 +286,7 @@ void AudioPlayer::fillAudioBuffer()
 	for (int j = 0; j < nb_input_frames; j++)
 	  stretcher_input[i][j] = audio_buffer_data[(nb_channels * j) + i];
       }
-      stretcher->process(stretcher_input, static_cast<size_t>(nb_input_frames), reading_index == decoded_samples->size());
+      stretcher->process(stretcher_input, static_cast<size_t>(nb_input_frames), reading_index == nb_audio_buffers);
       for (int i = 0; i < nb_channels; i++)
 	delete[] stretcher_input[i];
       delete[] stretcher_input;
@@ -344,6 +343,7 @@ void AudioPlayer::fillAudioBuffer()
 void AudioPlayer::finishDecoding()
 {
   decoded_samples->squeeze();
+  nb_audio_buffers = decoded_samples->size();
 
   emit loadingProgressChanged(100);
   disconnect(audio_decoder, 0, 0, 0);
