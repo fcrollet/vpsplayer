@@ -362,7 +362,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_stop->setEnabled(false);
     setWindowTitle(QStringLiteral("VPS Player"));
     label_loading_progress->clear();
-    progress_playing->setCursor(Qt::ForbiddenCursor);
+    progress_playing->setClickable(false);
     break;
   case AudioPlayer::Loading :
     label_status->setText("Loading file");
@@ -372,7 +372,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(false);
     button_pause->setEnabled(false);
     button_stop->setEnabled(false);
-    progress_playing->setCursor(Qt::ForbiddenCursor);
+    progress_playing->setClickable(false);
     break;
   case AudioPlayer::Stopped :
     label_status->setText("Stopped");
@@ -382,7 +382,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
     button_stop->setEnabled(false);
-    progress_playing->setCursor(Qt::ForbiddenCursor);
+    progress_playing->setClickable(false);
     break;
   case AudioPlayer::Paused :
     label_status->setText("Paused");
@@ -392,7 +392,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
     button_stop->setEnabled(true);
-    progress_playing->setCursor(Qt::PointingHandCursor);
+    progress_playing->setClickable(true);
     break;
   case AudioPlayer::Playing :
     label_status->setText("Playing");
@@ -402,7 +402,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(false);
     button_pause->setEnabled(true);
     button_stop->setEnabled(true);
-    progress_playing->setCursor(Qt::PointingHandCursor);
+    progress_playing->setClickable(true);
     break;
   }
 }

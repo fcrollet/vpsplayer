@@ -1,4 +1,4 @@
-// Copyright 2018 François CROLLET
+// Copyright 2018-2019 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -16,15 +16,19 @@ class PlayingProgress : public QProgressBar
 {
   Q_OBJECT
 
+private:
+  bool is_clickable;
+
 public:
   PlayingProgress(QWidget *parent = nullptr); // Constructor
   ~PlayingProgress(); // Destructor
+  void setClickable(bool clickable); // Sets whether the progress bar is clickable
 
 protected:
   void mousePressEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse button pressed" event handler
 
 signals:
-  void barClicked(int); // This signal is emitted when the user clicks on the progress bar. Parameter : progression corresponding to the position where the click occured
+  void barClicked(int); // This signal is emitted when the user clicks on the progress bar (as long as it is clickable). Parameter : progression corresponding to the position where the click occured
 };
 
 #endif
