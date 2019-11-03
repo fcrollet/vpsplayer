@@ -12,6 +12,7 @@
 #include <QAction>
 #include <QCheckBox>
 #include <QFileInfo>
+#include <QIcon>
 #include <QLabel>
 #include <QLCDNumber>
 #include <QPushButton>
