@@ -68,7 +68,6 @@ private:
   void updateDuration(int duration); // Updates total file duration
   void updatePitch(int pitch); // Updates the pitch
   void updateReadingPosition(int position); // Updates current reading position
-  QString convertMSecToText(int milliseconds) const; // Converts a value in milliseconds to an "HH:mm:ss" format
   void updateSpeed(int speed); // Updates the speed
   void updateStatus(AudioPlayer::Status status); // Updates the window based on the player status
   void updateVolume(int volume); // Updates the volume

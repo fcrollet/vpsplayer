@@ -20,10 +20,10 @@
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QStringList>
-#include <QTime>
 #include <QVBoxLayout>
 
 #include "Player_window.h"
+#include "tools.h"
 
 
 // Constructor
@@ -304,7 +304,7 @@ void PlayerWindow::updateDuration(int duration)
     progress_playing->setValue(0);
   else
     progress_playing->setMaximum(duration);
-  label_duration->setText(convertMSecToText(duration));
+  label_duration->setText(Tools::convertMSecToText(duration));
 }
 
 
@@ -325,17 +325,7 @@ void PlayerWindow::updateReadingPosition(int position)
     progress_playing->setValue(position);
     progress_playing->setFormat(QString::number(position)); // to force progress bar refresh
   }
-  label_reading_progress->setText(convertMSecToText(position));
-}
-
-
-// Converts a value in milliseconds to an "HH:mm:ss" format
-QString PlayerWindow::convertMSecToText(int milliseconds) const
-{
-  if (milliseconds < 0)
-    return QStringLiteral("--:--:--");
-  else
-    return QTime(0, 0).addMSecs(milliseconds).toString(QStringLiteral("HH:mm:ss"));
+  label_reading_progress->setText(Tools::convertMSecToText(position));
 }
 
 

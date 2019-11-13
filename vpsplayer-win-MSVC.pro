@@ -7,6 +7,7 @@ DEFINES += USE_KISSFFT USE_SPEEX NO_THREADING __MSVC__
 HEADERS = src/Audio_player.h \
           src/Player_window.h \
           src/Playing_progress.h \
+          src/tools.h \
           rubberband/src/StretcherChannelData.h \
           rubberband/src/float_cast/float_cast.h \
           rubberband/src/StretcherImpl.h \
@@ -38,6 +39,7 @@ SOURCES = src/main.cpp \
           src/Audio_player.cpp \
           src/Player_window.cpp \
           src/Playing_progress.cpp \
+          src/tools.cpp \
           rubberband/src/RubberBandStretcher.cpp \
           rubberband/src/StretcherProcess.cpp \
           rubberband/src/StretchCalculator.cpp \

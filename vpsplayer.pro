@@ -8,11 +8,13 @@ OBJECTS_DIR = build_tmp
 RCC_DIR = build_tmp
 HEADERS = src/Audio_player.h \
           src/Player_window.h \
-          src/Playing_progress.h
+          src/Playing_progress.h \
+          src/tools.h
 SOURCES = src/main.cpp \
           src/Audio_player.cpp \
           src/Player_window.cpp \
-          src/Playing_progress.cpp
+          src/Playing_progress.cpp \
+          src/tools.cpp
 RESOURCES = icons.qrc
 TARGET = vpsplayer
 
