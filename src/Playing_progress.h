@@ -25,6 +25,7 @@ public:
   void setClickable(bool clickable); // Sets whether the progress bar is clickable
 
 protected:
+  void mouseMoveEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse moved" event handler
   void mousePressEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse button pressed" event handler
 
 signals:

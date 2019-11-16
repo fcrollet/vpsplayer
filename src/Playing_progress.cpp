@@ -5,7 +5,10 @@
 // VPS Player is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 // You should have received a copy of the GNU General Public License along with VPS Player. If not, see <http://www.gnu.org/licenses/>.
 
+#include <QToolTip>
+
 #include "Playing_progress.h"
+#include "tools.h"
 
 
 // Constructor
@@ -28,12 +31,27 @@ void PlayingProgress::setClickable(bool clickable)
 {
   if (clickable)
     setCursor(Qt::PointingHandCursor);
-  else
+  else {
     setCursor(Qt::ForbiddenCursor);
+    if (underMouse())
+      QToolTip::hideText();
+  }
+
+  setMouseTracking(clickable);
 
   is_clickable = clickable;
 }
 
+
+// Reimplementation of QWidget's "mouse moved" event handler
+void PlayingProgress::mouseMoveEvent(QMouseEvent *event)
+{
+  if (is_clickable)
+    QToolTip::showText(event->globalPos(), Tools::convertMSecToText(event->x() * (maximum() / width())));
+
+  event->accept();
+}
+  
 
 // Reimplementation of QWidget's "mouse button pressed" event handler
 void PlayingProgress::mousePressEvent(QMouseEvent *event)
