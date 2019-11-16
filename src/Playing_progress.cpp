@@ -47,7 +47,7 @@ void PlayingProgress::setClickable(bool clickable)
 void PlayingProgress::mouseMoveEvent(QMouseEvent *event)
 {
   if (is_clickable)
-    QToolTip::showText(event->globalPos(), Tools::convertMSecToText(event->x() * (maximum() / width())));
+    QToolTip::showText(event->globalPos(), Tools::convertMSecToText(convertPixelsToMSec(event->x())));
 
   event->accept();
 }
@@ -57,7 +57,14 @@ void PlayingProgress::mouseMoveEvent(QMouseEvent *event)
 void PlayingProgress::mousePressEvent(QMouseEvent *event)
 {
   if ((event->button() == Qt::LeftButton) && is_clickable)
-    emit barClicked(event->x() * (maximum() / width()));
+    emit barClicked(convertPixelsToMSec(event->x()));
 
   event->accept();
+}
+
+
+// Convert a number of pixels (part of the progress bar's width) into the corresponding duration in milliseconds
+int PlayingProgress::convertPixelsToMSec(int pixels) const
+{
+  return pixels * (maximum() / width());
 }

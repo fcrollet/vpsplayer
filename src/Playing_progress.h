@@ -28,6 +28,9 @@ protected:
   void mouseMoveEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse moved" event handler
   void mousePressEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse button pressed" event handler
 
+private:
+  int convertPixelsToMSec(int pixels) const; // Convert a number of pixels (part of the progress bar's width) into the corresponding duration in milliseconds
+  
 signals:
   void barClicked(int); // This signal is emitted when the user clicks on the progress bar (as long as it is clickable). Parameter : progression corresponding to the position where the click occured
 };
