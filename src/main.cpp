@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   QCoreApplication::setApplicationName(QStringLiteral("VPS Player"));
   QCoreApplication::setApplicationVersion(QStringLiteral(VERSION_STRING));
-  QIcon app_icon(QStringLiteral(":/vps-64.png"));
+  const QIcon app_icon(QStringLiteral(":/vps-64.png"));
   app.setWindowIcon(app_icon);
   
   QCommandLineParser parser;
