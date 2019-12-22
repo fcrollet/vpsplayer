@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
   parser.addVersionOption();
   parser.addPositionalArgument("file", "Audio file to open (optional)", "[file]");
   parser.process(app);
-  QStringList arguments = parser.positionalArguments();
+  const QStringList arguments = parser.positionalArguments();
   QString filename;
   if (!arguments.isEmpty())
     filename = arguments.first();
