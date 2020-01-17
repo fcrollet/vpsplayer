@@ -274,11 +274,11 @@ void AudioPlayer::fillAudioBuffer()
 	return;
       }
       
-      const QAudioBuffer *current_audio_buffer = &(decoded_samples->at(reading_index));
+      const QAudioBuffer &current_audio_buffer = decoded_samples->at(reading_index);
       reading_index++;
-      const float *audio_buffer_data = current_audio_buffer->constData<float>();
+      const float *audio_buffer_data = current_audio_buffer.constData<float>();
       
-      int nb_input_frames = current_audio_buffer->frameCount();
+      int nb_input_frames = current_audio_buffer.frameCount();
       int nb_channels = target_format.channelCount();
       float **stretcher_input = new float*[nb_channels];
       for (int i = 0; i < nb_channels; i++){
@@ -325,7 +325,7 @@ void AudioPlayer::fillAudioBuffer()
 	temp_buffer->seek(0);
       }
 
-      emit readingPositionChanged(static_cast<int>(current_audio_buffer->startTime() / 1000));
+      emit readingPositionChanged(static_cast<int>(current_audio_buffer.startTime() / 1000));
     }
 
     qint64 size_to_write = qMin(temp_buffer->size() - temp_buffer->pos(), static_cast<qint64>(bytes_needed - bytes_processed));
