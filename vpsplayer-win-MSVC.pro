@@ -2,7 +2,7 @@ TEMPLATE = app
 CONFIG += qt warn_off release c++14
 QT += widgets multimedia
 INCLUDEPATH += rubberband rubberband/src
-DEFINES += VERSION_STRING=\\\"1.0.1\\\"
+DEFINES += VERSION_STRING=\\\"1.0.2\\\"
 DEFINES += USE_KISSFFT USE_SPEEX NO_THREADING __MSVC__
 HEADERS = src/Audio_player.h \
           src/Player_window.h \
