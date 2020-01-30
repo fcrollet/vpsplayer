@@ -1,4 +1,4 @@
-// Copyright 2018-2019 François CROLLET
+// Copyright 2018-2020 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -47,7 +47,7 @@ void PlayingProgress::setClickable(bool clickable)
 void PlayingProgress::mouseMoveEvent(QMouseEvent *event)
 {
   if (is_clickable)
-    QToolTip::showText(event->globalPos(), Tools::convertMSecToText(convertPixelsToMSec(event->x())));
+    QToolTip::showText(event->globalPos(), Tools::convertMSecToText(mouseEventPosition(event)));
 
   event->accept();
 }
@@ -57,14 +57,14 @@ void PlayingProgress::mouseMoveEvent(QMouseEvent *event)
 void PlayingProgress::mousePressEvent(QMouseEvent *event)
 {
   if ((event->button() == Qt::LeftButton) && is_clickable)
-    emit barClicked(convertPixelsToMSec(event->x()));
+    emit barClicked(mouseEventPosition(event));
 
   event->accept();
 }
 
 
-// Convert a number of pixels (part of the progress bar's width) into the corresponding duration in milliseconds
-int PlayingProgress::convertPixelsToMSec(int pixels) const
+// Returns the position in milliseconds corresponding to the mouse position on the progress bar where the event occured
+int PlayingProgress::mouseEventPosition(const QMouseEvent *event) const
 {
-  return pixels * (maximum() / width());
+  return event->x() * (maximum() / width());
 }
