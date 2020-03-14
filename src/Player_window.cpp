@@ -1,4 +1,4 @@
-// Copyright 2018-2019 François CROLLET
+// Copyright 2018-2020 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -32,6 +32,8 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   audio_player = new AudioPlayer(this);
 
   const QIcon open_icon(QStringLiteral(":/open-32.png"));
+  const QIcon backward_icon(QStringLiteral(":/backward-32.png"));
+  const QIcon forward_icon(QStringLiteral(":/forward-32.png"));
   const QFont fixed_font(QStringLiteral("monospace"));
   
   QMenu *menu_file = menuBar()->addMenu("&File");
@@ -121,6 +123,17 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   layout_buttons->addWidget(button_pause);
   layout_buttons->addWidget(button_stop);
 
+  button_bwd10 = new QPushButton(backward_icon, QStringLiteral("-10s"));
+  button_bwd2 = new QPushButton(backward_icon, QStringLiteral("-2s"));
+  button_fwd2 = new QPushButton(forward_icon, QStringLiteral("+2s"));
+  button_fwd10 = new QPushButton(forward_icon, QStringLiteral("+10s"));
+  QHBoxLayout *layout_buttons2 = new QHBoxLayout;
+  layout_buttons2->addWidget(button_bwd10);
+  layout_buttons2->addWidget(button_bwd2);
+  layout_buttons2->addStretch();
+  layout_buttons2->addWidget(button_fwd2);
+  layout_buttons2->addWidget(button_fwd10);
+
   progress_playing = new PlayingProgress;
   label_reading_progress = new QLabel;
   label_reading_progress->setFont(fixed_font);
@@ -133,6 +146,7 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
 
   QVBoxLayout *layout_player = new QVBoxLayout;
   layout_player->addLayout(layout_buttons);
+  layout_player->addLayout(layout_buttons2);
   layout_player->addLayout(layout_progress);
   QGroupBox *groupbox_player = new QGroupBox("Player");
   groupbox_player->setLayout(layout_player);
@@ -170,6 +184,10 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   connect(button_play, &QPushButton::clicked, this, &PlayerWindow::playAudio);
   connect(button_pause, &QPushButton::clicked, audio_player, &AudioPlayer::pausePlaying);
   connect(button_stop, &QPushButton::clicked, audio_player, &AudioPlayer::stopPlaying);
+  connect(button_bwd10, &QPushButton::clicked, [=](){ moveReadingPosition(-10000); });
+  connect(button_bwd2, &QPushButton::clicked, [=](){ moveReadingPosition(-2000); });
+  connect(button_fwd2, &QPushButton::clicked, [=](){ moveReadingPosition(2000); });
+  connect(button_fwd10, &QPushButton::clicked, [=](){ moveReadingPosition(10000); });
   connect(spinbox_pitch, qOverload<int>(&QSpinBox::valueChanged), slider_pitch, &QAbstractSlider::setValue);
   connect(slider_pitch, &QAbstractSlider::valueChanged, this, &PlayerWindow::updatePitch);
   connect(slider_speed, &QAbstractSlider::valueChanged, this, &PlayerWindow::updateSpeed);
@@ -288,6 +306,17 @@ void PlayerWindow::playAudio()
 }
 
 
+// Moves reading position backward or forward. Parameter: position change in milliseconds
+void PlayerWindow::moveReadingPosition(int delta)
+{
+  int new_position = progress_playing->value() + delta;
+  if (new_position >= progress_playing->maximum())
+    audio_player->stopPlaying();
+  else
+    audio_player->moveReadingPosition(qMax(0, new_position));
+}
+
+
 // Displays "About" dialog window
 void PlayerWindow::showAbout()
 {
@@ -350,6 +379,10 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(false);
     button_pause->setEnabled(false);
     button_stop->setEnabled(false);
+    button_bwd10->setEnabled(false);
+    button_bwd2->setEnabled(false);
+    button_fwd2->setEnabled(false);
+    button_fwd10->setEnabled(false);
     setWindowTitle(QStringLiteral("VPS Player"));
     label_loading_progress->clear();
     progress_playing->setClickable(false);
@@ -362,6 +395,10 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(false);
     button_pause->setEnabled(false);
     button_stop->setEnabled(false);
+    button_bwd10->setEnabled(false);
+    button_bwd2->setEnabled(false);
+    button_fwd2->setEnabled(false);
+    button_fwd10->setEnabled(false);
     progress_playing->setClickable(false);
     break;
   case AudioPlayer::Stopped :
@@ -372,6 +409,10 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
     button_stop->setEnabled(false);
+    button_bwd10->setEnabled(false);
+    button_bwd2->setEnabled(false);
+    button_fwd2->setEnabled(false);
+    button_fwd10->setEnabled(false);
     progress_playing->setClickable(false);
     break;
   case AudioPlayer::Paused :
@@ -382,6 +423,10 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
     button_stop->setEnabled(true);
+    button_bwd10->setEnabled(true);
+    button_bwd2->setEnabled(true);
+    button_fwd2->setEnabled(true);
+    button_fwd10->setEnabled(true);
     progress_playing->setClickable(true);
     break;
   case AudioPlayer::Playing :
@@ -392,6 +437,10 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_play->setEnabled(false);
     button_pause->setEnabled(true);
     button_stop->setEnabled(true);
+    button_bwd10->setEnabled(true);
+    button_bwd2->setEnabled(true);
+    button_fwd2->setEnabled(true);
+    button_fwd10->setEnabled(true);
     progress_playing->setClickable(true);
     break;
   }

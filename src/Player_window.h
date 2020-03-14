@@ -39,6 +39,10 @@ private:
   QPushButton *button_play;
   QPushButton *button_pause;
   QPushButton *button_stop;
+  QPushButton *button_bwd10;
+  QPushButton *button_bwd2;
+  QPushButton *button_fwd2;
+  QPushButton *button_fwd10;
   QSlider *slider_pitch;
   QSlider *slider_speed;
   QSlider *slider_volume;
@@ -64,6 +68,7 @@ private:
   void openFile(const QFileInfo &file_info); // Open file given in parameter
   void openFileFromSelector(); // Open a new file (chosen with a file selector)
   void playAudio(); // Start or resume audio playing
+  void moveReadingPosition(int delta); // Moves reading position backward or forward. Parameter: position change in milliseconds
   void showAbout(); // Displays "About" dialog window
   void updateDuration(int duration); // Updates total file duration
   void updatePitch(int pitch); // Updates the pitch

@@ -7,6 +7,8 @@
     <file alias="play-32.png">icons/play-32.png</file>
     <file alias="pause-32.png">icons/pause-32.png</file>
     <file alias="stop-32.png">icons/stop-32.png</file>
+    <file alias="forward-32.png">icons/forward-32.png</file>
+    <file alias="backward-32.png">icons/backward-32.png</file>
     <file alias="quit-32.png">icons/quit-32.png</file>
 </qresource>
 </RCC>
