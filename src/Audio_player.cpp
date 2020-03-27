@@ -105,6 +105,7 @@ void AudioPlayer::moveReadingPosition(int position)
   
   temp_buffer->close();
   temp_buffer->buffer().clear();
+  stretcher->reset();
   audio_output->reset();
   output_buffer = audio_output->start();
   if (status == AudioPlayer::Paused)
