@@ -23,6 +23,16 @@
   <developer_name>François CROLLET</developer_name>
   <update_contact>fcrollet_AT_gmail.com</update_contact>
   <releases>
+    <release version="1.0.3" date="2020-03-31">
+      <description>
+	<p>This release is a minor update:</p>
+	<ul>
+	  <li>New fast forward/backward buttons</li>
+	  <li>Fixed audio artifacts when moving reading position</li>
+	</ul>
+      </description>
+      <url>https://github.com/fcrollet/vpsplayer/releases/tag/v1.0.3</url>
+    </release>
     <release version="1.0.2" date="2020-01-18">
       <description>
 	<p>This release is a minor update:</p>
