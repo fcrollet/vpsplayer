@@ -76,7 +76,7 @@ void AudioPlayer::decodeFile(const QString &filename)
   audio_decoder->setAudioFormat(decode_format);
 
   connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
-  connect(audio_decoder, &QAudioDecoder::durationChanged, [=](qint64 duration){ emit durationChanged(static_cast<int>(duration)); });
+  connect(audio_decoder, &QAudioDecoder::durationChanged, [this](qint64 duration){ emit durationChanged(static_cast<int>(duration)); });
   connect(audio_decoder, &QAudioDecoder::finished, this, &AudioPlayer::finishDecoding);
   connect(audio_decoder, qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
     
