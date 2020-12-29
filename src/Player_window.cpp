@@ -370,6 +370,15 @@ void PlayerWindow::updateSpeed(int speed)
 // Updates the window based on the player status
 void PlayerWindow::updateStatus(AudioPlayer::Status status)
 {
+  auto set_playback_actions = [this](bool playback_begun) {
+    button_stop->setEnabled(playback_begun);
+    button_bwd10->setEnabled(playback_begun);
+    button_bwd2->setEnabled(playback_begun);
+    button_fwd2->setEnabled(playback_begun);
+    button_fwd10->setEnabled(playback_begun);
+    progress_playing->setClickable(playback_begun);
+  };
+
   switch(status) {
   case AudioPlayer::NoFileLoaded :
     label_status->setText("No file loaded");
@@ -378,14 +387,9 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_cancel->setEnabled(false);
     button_play->setEnabled(false);
     button_pause->setEnabled(false);
-    button_stop->setEnabled(false);
-    button_bwd10->setEnabled(false);
-    button_bwd2->setEnabled(false);
-    button_fwd2->setEnabled(false);
-    button_fwd10->setEnabled(false);
+    set_playback_actions(false);
     setWindowTitle(QStringLiteral("VPS Player"));
     label_loading_progress->clear();
-    progress_playing->setClickable(false);
     break;
   case AudioPlayer::Loading :
     label_status->setText("Loading file");
@@ -394,12 +398,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_cancel->setEnabled(true);
     button_play->setEnabled(false);
     button_pause->setEnabled(false);
-    button_stop->setEnabled(false);
-    button_bwd10->setEnabled(false);
-    button_bwd2->setEnabled(false);
-    button_fwd2->setEnabled(false);
-    button_fwd10->setEnabled(false);
-    progress_playing->setClickable(false);
+    set_playback_actions(false);
     break;
   case AudioPlayer::Stopped :
     label_status->setText("Stopped");
@@ -408,12 +407,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_cancel->setEnabled(false);
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
-    button_stop->setEnabled(false);
-    button_bwd10->setEnabled(false);
-    button_bwd2->setEnabled(false);
-    button_fwd2->setEnabled(false);
-    button_fwd10->setEnabled(false);
-    progress_playing->setClickable(false);
+    set_playback_actions(false);
     break;
   case AudioPlayer::Paused :
     label_status->setText("Paused");
@@ -422,12 +416,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_cancel->setEnabled(false);
     button_play->setEnabled(true);
     button_pause->setEnabled(false);
-    button_stop->setEnabled(true);
-    button_bwd10->setEnabled(true);
-    button_bwd2->setEnabled(true);
-    button_fwd2->setEnabled(true);
-    button_fwd10->setEnabled(true);
-    progress_playing->setClickable(true);
+    set_playback_actions(true);
     break;
   case AudioPlayer::Playing :
     label_status->setText("Playing");
@@ -436,12 +425,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_cancel->setEnabled(false);
     button_play->setEnabled(false);
     button_pause->setEnabled(true);
-    button_stop->setEnabled(true);
-    button_bwd10->setEnabled(true);
-    button_bwd2->setEnabled(true);
-    button_fwd2->setEnabled(true);
-    button_fwd10->setEnabled(true);
-    progress_playing->setClickable(true);
+    set_playback_actions(true);
     break;
   }
 }
