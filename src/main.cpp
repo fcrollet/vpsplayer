@@ -1,4 +1,4 @@
-// Copyright 2018-2019 François CROLLET
+// Copyright 2018-2020 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -23,16 +23,18 @@ int main(int argc, char *argv[])
   const QIcon app_icon(QStringLiteral(":/vps-64.png"));
   app.setWindowIcon(app_icon);
   
-  QCommandLineParser parser;
-  parser.setApplicationDescription("High quality Variable Pitch and Speed audio player");
-  parser.addHelpOption();
-  parser.addVersionOption();
-  parser.addPositionalArgument("file", "Audio file to open (optional)", "[file]");
-  parser.process(app);
-  const QStringList arguments = parser.positionalArguments();
   QString filename;
-  if (!arguments.isEmpty())
-    filename = arguments.first();
+  {
+    QCommandLineParser parser;
+    parser.setApplicationDescription("High quality Variable Pitch and Speed audio player");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("file", "Audio file to open (optional)", "[file]");
+    parser.process(app);
+    const QStringList arguments = parser.positionalArguments();
+    if (!arguments.isEmpty())
+      filename = arguments.first();
+  }
   
   PlayerWindow window(app_icon, filename);
   window.show();
