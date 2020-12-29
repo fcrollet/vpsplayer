@@ -2,7 +2,7 @@
 
 set -e
 
-wget -c https://breakfastquay.com/files/releases/rubberband-1.8.2.tar.bz2
-tar -xjf rubberband-1.8.2.tar.bz2
-mv rubberband-1.8.2 rubberband
-rm -f rubberband-1.8.2.tar.bz2
+wget -c https://breakfastquay.com/files/releases/rubberband-1.9.0.tar.bz2
+tar -xjf rubberband-1.9.0.tar.bz2
+mv rubberband-1.9.0 rubberband
+rm -f rubberband-1.9.0.tar.bz2
