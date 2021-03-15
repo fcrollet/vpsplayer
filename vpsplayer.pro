@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += qt warn_on release link_pkgconfig c++14
+CONFIG += qt warn_on release link_pkgconfig c++14 exceptions_off
 QT += widgets multimedia
 PKGCONFIG += rubberband
 DEFINES += VERSION_STRING=\\\"1.0.3\\\"
