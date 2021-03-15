@@ -33,6 +33,7 @@ HEADERS = src/Audio_player.h \
           rubberband/src/system/sysutils.h \
           rubberband/src/kissfft/_kiss_fft_guts.h \
           rubberband/src/kissfft/kiss_fft.h \
+          rubberband/src/kissfft/kiss_fft_log.h \
           rubberband/src/kissfft/kiss_fftr.h \
           rubberband/src/speex/speex_resampler.h
 SOURCES = src/main.cpp \
