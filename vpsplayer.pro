@@ -2,7 +2,7 @@ TEMPLATE = app
 CONFIG += qt warn_on release link_pkgconfig c++14 exceptions_off
 QT += widgets multimedia
 PKGCONFIG += rubberband
-DEFINES += VERSION_STRING=\\\"1.0.3\\\"
+DEFINES += VERSION_STRING=\\\"1.0.4\\\"
 MOC_DIR = build_tmp
 OBJECTS_DIR = build_tmp
 RCC_DIR = build_tmp
