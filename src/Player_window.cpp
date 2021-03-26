@@ -202,14 +202,14 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   connect(audio_player, &AudioPlayer::audioOutputError, this, &PlayerWindow::displayAudioDeviceError);
   connect(progress_playing, &PlayingProgress::barClicked, audio_player, &AudioPlayer::moveReadingPosition);
 
-  QStringList music_directories = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
+  const QStringList music_directories = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
   if (music_directories.isEmpty())
     music_directory = QDir::homePath();
   else
     music_directory = music_directories.first();
 
   if (!filename.isEmpty()) {
-    QFileInfo file_info(filename);
+    const QFileInfo file_info(filename);
     
     if (file_info.exists() && file_info.isFile())
       openFile(file_info);
