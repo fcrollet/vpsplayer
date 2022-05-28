@@ -40,8 +40,8 @@ private:
   QPushButton *button_pause;
   QPushButton *button_stop;
   QPushButton *button_bwd10;
-  QPushButton *button_bwd2;
-  QPushButton *button_fwd2;
+  QPushButton *button_bwd5;
+  QPushButton *button_fwd5;
   QPushButton *button_fwd10;
   QSlider *slider_pitch;
   QSlider *slider_speed;

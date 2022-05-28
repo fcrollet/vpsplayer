@@ -124,14 +124,14 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   layout_buttons->addWidget(button_stop);
 
   button_bwd10 = new QPushButton(backward_icon, QStringLiteral("-10s"));
-  button_bwd2 = new QPushButton(backward_icon, QStringLiteral("-2s"));
-  button_fwd2 = new QPushButton(forward_icon, QStringLiteral("+2s"));
+  button_bwd5 = new QPushButton(backward_icon, QStringLiteral("-5s"));
+  button_fwd5 = new QPushButton(forward_icon, QStringLiteral("+5s"));
   button_fwd10 = new QPushButton(forward_icon, QStringLiteral("+10s"));
   QHBoxLayout *layout_buttons2 = new QHBoxLayout;
   layout_buttons2->addWidget(button_bwd10);
-  layout_buttons2->addWidget(button_bwd2);
+  layout_buttons2->addWidget(button_bwd5);
   layout_buttons2->addStretch();
-  layout_buttons2->addWidget(button_fwd2);
+  layout_buttons2->addWidget(button_fwd5);
   layout_buttons2->addWidget(button_fwd10);
 
   progress_playing = new PlayingProgress;
@@ -185,8 +185,8 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   connect(button_pause, &QPushButton::clicked, audio_player, &AudioPlayer::pausePlaying);
   connect(button_stop, &QPushButton::clicked, audio_player, &AudioPlayer::stopPlaying);
   connect(button_bwd10, &QPushButton::clicked, [this](){ moveReadingPosition(-10000); });
-  connect(button_bwd2, &QPushButton::clicked, [this](){ moveReadingPosition(-2000); });
-  connect(button_fwd2, &QPushButton::clicked, [this](){ moveReadingPosition(2000); });
+  connect(button_bwd5, &QPushButton::clicked, [this](){ moveReadingPosition(-5000); });
+  connect(button_fwd5, &QPushButton::clicked, [this](){ moveReadingPosition(5000); });
   connect(button_fwd10, &QPushButton::clicked, [this](){ moveReadingPosition(10000); });
   connect(spinbox_pitch, qOverload<int>(&QSpinBox::valueChanged), slider_pitch, &QAbstractSlider::setValue);
   connect(slider_pitch, &QAbstractSlider::valueChanged, this, &PlayerWindow::updatePitch);
@@ -373,8 +373,8 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
   auto set_playback_actions = [this](bool playback_begun) {
     button_stop->setEnabled(playback_begun);
     button_bwd10->setEnabled(playback_begun);
-    button_bwd2->setEnabled(playback_begun);
-    button_fwd2->setEnabled(playback_begun);
+    button_bwd5->setEnabled(playback_begun);
+    button_fwd5->setEnabled(playback_begun);
     button_fwd10->setEnabled(playback_begun);
     progress_playing->setClickable(playback_begun);
   };
