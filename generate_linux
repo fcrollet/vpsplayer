@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# QT5 qmake utility (give full path if it is in a non standard location)
+# QT6 qmake utility (give full path if it is in a non standard location)
 # ----------------------------------------------------------------------
-QMAKE=qmake-qt5
+QMAKE=qmake6
 
 # make command options
 # --------------------

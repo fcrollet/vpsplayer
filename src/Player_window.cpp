@@ -1,4 +1,4 @@
-// Copyright 2018-2020 François CROLLET
+// Copyright 2018-2022 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -241,8 +241,8 @@ void PlayerWindow::displayAudioDecodingError(QAudioDecoder::Error error)
   case QAudioDecoder::AccessDeniedError :
     error_message = "Access denied";
     break;
-  case QAudioDecoder::ServiceMissingError :
-    error_message = "No audio decoding service available";
+  case QAudioDecoder::NotSupportedError :
+    error_message = "Audio decoding not supported on this platform";
     break;
   default :
     error_message = "Unknown error";

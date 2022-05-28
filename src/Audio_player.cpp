@@ -7,8 +7,8 @@
 
 #include <QtDebug>
 #include <QtMath>
-#include <QAudioDeviceInfo>
-#include <QSysInfo>
+#include <QMediaDevices>
+#include <QUrl>
 
 #include "Audio_player.h"
 
@@ -21,15 +21,9 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    pitch_scale(1.0),
 					    option_formant_preserved(true),
 					    option_high_quality(true),
-					    target_format(QAudioDeviceInfo::defaultOutputDevice().preferredFormat())
+					    target_format(QMediaDevices::defaultAudioOutput().preferredFormat())
 {
-  target_format.setCodec(QStringLiteral("audio/pcm"));
-  target_format.setSampleType(QAudioFormat::SignedInt);
-  target_format.setSampleSize(16);
-  if (QSysInfo::ByteOrder == QSysInfo::BigEndian)
-    target_format.setByteOrder(QAudioFormat::BigEndian);
-  else
-    target_format.setByteOrder(QAudioFormat::LittleEndian);
+  target_format.setSampleFormat(QAudioFormat::Int16);
   qDebug() << "Sample rate:" << target_format.sampleRate();
   qDebug() << "Channel count:" << target_format.channelCount();
 }
@@ -66,13 +60,12 @@ void AudioPlayer::decodeFile(const QString &filename)
   emit readingPositionChanged(-1);
   emit loadingProgressChanged(0);
 
-  decoded_samples = std::make_unique<QVector<QAudioBuffer>>();
+  decoded_samples = std::make_unique<QList<QAudioBuffer>>();
 
   audio_decoder = new QAudioDecoder(this);
   QAudioFormat decode_format(target_format);
-  decode_format.setSampleType(QAudioFormat::Float);
-  decode_format.setSampleSize(32);
-  audio_decoder->setSourceFilename(filename);
+  decode_format.setSampleFormat(QAudioFormat::Float);
+  audio_decoder->setSource(QUrl::fromLocalFile(filename));
   audio_decoder->setAudioFormat(decode_format);
 
   connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
@@ -123,6 +116,7 @@ void AudioPlayer::pausePlaying()
   status = AudioPlayer::Paused;
   emit statusChanged(status);
   audio_output->suspend();
+  timer->stop();
 }
 
 
@@ -134,6 +128,7 @@ void AudioPlayer::resumePlaying()
 
   status = AudioPlayer::Playing;
   emit statusChanged(status);
+  timer->start();
   audio_output->resume();
   fillAudioBuffer();
 }
@@ -164,12 +159,13 @@ void AudioPlayer::startPlaying()
   }
   stretcher->setMaxProcessSize(static_cast<size_t>(max_sample_count));
   
-  audio_output = new QAudioOutput(target_format, this);
-  audio_output->setNotifyInterval(10);
+  audio_output = new QAudioSink(target_format, this);
   audio_output->setVolume(output_volume);
+  timer = new QTimer(this);
+  timer->setInterval(10);
   temp_buffer = new QBuffer(this);
-  connect(audio_output, &QAudioOutput::notify, this, &AudioPlayer::fillAudioBuffer);
-  connect(audio_output, &QAudioOutput::stateChanged, this, &AudioPlayer::manageAudioOutputState);
+  connect(timer, &QTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
+  connect(audio_output, &QAudioSink::stateChanged, this, &AudioPlayer::manageAudioOutputState);
   output_buffer = audio_output->start();
   QAudio::Error error_status = audio_output->error();
   if ((error_status == QAudio::NoError) || (error_status == QAudio::UnderrunError))
@@ -179,6 +175,7 @@ void AudioPlayer::startPlaying()
     emit audioOutputError(error_status);
     stopPlaying();
   }
+  timer->start();
 }
 
 
@@ -191,7 +188,9 @@ void AudioPlayer::stopPlaying()
   status = AudioPlayer::Stopped;
   emit statusChanged(status);
   emit readingPositionChanged(0);
-  
+
+  disconnect(timer, 0, 0, 0);
+  timer->deleteLater();
   audio_output->stop();
   disconnect(audio_output, 0, 0, 0);
   audio_output->deleteLater();
