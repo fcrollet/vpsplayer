@@ -160,6 +160,7 @@ void AudioPlayer::startPlaying()
   stretcher->setMaxProcessSize(static_cast<size_t>(max_sample_count));
   
   audio_output = new QAudioSink(target_format, this);
+  audio_output->setBufferSize(static_cast<qsizetype>(target_format.bytesForDuration(100000))); // Audio buffer size should correspond to about 100 ms.
   audio_output->setVolume(output_volume);
   timer = new QTimer(this);
   timer->setInterval(10);
