@@ -1,4 +1,4 @@
-// Copyright 2018-2020 François CROLLET
+// Copyright 2018-2022 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -25,8 +25,8 @@ public:
   void setClickable(bool clickable); // Sets whether the progress bar is clickable
 
 protected:
-  void mouseMoveEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse moved" event handler
-  void mousePressEvent(QMouseEvent *event); // Reimplementation of QWidget's "mouse button pressed" event handler
+  void mouseMoveEvent(QMouseEvent *event) override; // Reimplementation of QWidget's "mouse moved" event handler
+  void mousePressEvent(QMouseEvent *event) override; // Reimplementation of QWidget's "mouse button pressed" event handler
 
 private:
   int mouseEventPosition(const QMouseEvent *event) const; // Returns the position in milliseconds corresponding to the mouse position on the progress bar where the event occured
