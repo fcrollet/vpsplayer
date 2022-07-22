@@ -10,13 +10,11 @@
 
 #include <QMainWindow>
 #include <QAction>
-#include <QCheckBox>
 #include <QFileInfo>
 #include <QIcon>
 #include <QLabel>
 #include <QLCDNumber>
 #include <QPushButton>
-#include <QSlider>
 #include <QSpinBox>
 #include <QString>
 
@@ -31,9 +29,6 @@ class PlayerWindow : public QMainWindow
 private:
   AudioPlayer *audio_player;
   QAction *action_open;
-  QAction *action_quit;
-  QAction *action_about;
-  QAction *action_about_qt;
   QPushButton *button_open;
   QPushButton *button_cancel;
   QPushButton *button_play;
@@ -43,14 +38,9 @@ private:
   QPushButton *button_bwd5;
   QPushButton *button_fwd5;
   QPushButton *button_fwd10;
-  QSlider *slider_pitch;
-  QSlider *slider_speed;
-  QSlider *slider_volume;
   QSpinBox *spinbox_pitch;
   QLabel *label_speed_value;
   QLCDNumber *lcd_volume;
-  QCheckBox *check_high_quality;
-  QCheckBox *check_formant_preserved;
   PlayingProgress *progress_playing;
   QLabel *label_reading_progress;
   QLabel *label_duration;

@@ -7,6 +7,7 @@
 
 #include <QtMath>
 #include <QAudio>
+#include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QFont>
@@ -17,6 +18,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSlider>
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QStringList>
@@ -40,10 +42,10 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   QMenu *menu_help = menuBar()->addMenu(QStringLiteral("&?"));
   action_open = new QAction(open_icon, "&Open", this);
   action_open->setShortcut(QKeySequence(QStringLiteral("Ctrl+O")));
-  action_quit = new QAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", this);
+  QAction *action_quit = new QAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", this);
   action_quit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
-  action_about = new QAction(app_icon, "&About", this);
-  action_about_qt = new QAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", this);
+  QAction *action_about = new QAction(app_icon, "&About", this);
+  QAction *action_about_qt = new QAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", this);
   menu_file->addAction(action_open);
   menu_file->addSeparator();
   menu_file->addAction(action_quit);
@@ -62,21 +64,21 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   label_speed->setAlignment(Qt::AlignRight);
   QLabel *label_volume = new QLabel("Volume");
   label_volume->setAlignment(Qt::AlignRight);
-  slider_pitch = new QSlider;
+  QSlider *slider_pitch = new QSlider;
   slider_pitch->setOrientation(Qt::Horizontal);
   slider_pitch->setTickPosition(QSlider::TicksAbove);
   slider_pitch->setRange(-12, 12);
   slider_pitch->setSingleStep(1);
   slider_pitch->setPageStep(2);
   slider_pitch->setTickInterval(12);
-  slider_speed = new QSlider;
+  QSlider *slider_speed = new QSlider;
   slider_speed->setOrientation(Qt::Horizontal);
   slider_speed->setTickPosition(QSlider::TicksAbove);
   slider_speed->setRange(-12, 12);
   slider_speed->setSingleStep(1);
   slider_speed->setPageStep(4);
   slider_speed->setTickInterval(12);
-  slider_volume = new QSlider;
+  QSlider *slider_volume = new QSlider;
   slider_volume->setOrientation(Qt::Horizontal);
   slider_volume->setTickPosition(QSlider::TicksAbove);
   slider_volume->setRange(0, 100);
@@ -99,9 +101,9 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   layout_sliders->addWidget(label_speed_value, 1, 2);
   layout_sliders->addWidget(lcd_volume, 2, 2);
 
-  check_high_quality = new QCheckBox("High quality (uses more CPU)");
+  QCheckBox *check_high_quality = new QCheckBox("High quality (uses more CPU)");
   check_high_quality->setToolTip("Use the highest quality method for pitch shifting. This method may use much more CPU, especially for large pitch shift.");
-  check_formant_preserved = new QCheckBox("Preserve formant shape (spectral envelope)");
+  QCheckBox *check_formant_preserved = new QCheckBox("Preserve formant shape (spectral envelope)");
   check_formant_preserved->setToolTip("Preserve the spectral envelope of the original signal. This permits shifting the note frequency without so substantially affecting the perceived pitch profile of the voice or instrument.");
   QVBoxLayout *layout_settings = new QVBoxLayout;
   layout_settings->addLayout(layout_sliders);
