@@ -370,62 +370,38 @@ void PlayerWindow::updateSpeed(int speed)
 // Updates the window based on the player status
 void PlayerWindow::updateStatus(AudioPlayer::Status status)
 {
-  auto set_playback_actions = [this](bool playback_begun) {
+  auto set_controls = [this](const QString &status_text, bool enable_open, bool decoding, bool playback_begun, bool enable_play, bool enable_pause) {
+    label_status->setText(status_text);
+    action_open->setEnabled(enable_open);
+    button_open->setEnabled(enable_open);
+    button_cancel->setEnabled(decoding);
     button_stop->setEnabled(playback_begun);
     button_bwd10->setEnabled(playback_begun);
     button_bwd5->setEnabled(playback_begun);
     button_fwd5->setEnabled(playback_begun);
     button_fwd10->setEnabled(playback_begun);
+    button_play->setEnabled(enable_play);
+    button_pause->setEnabled(enable_pause);
     progress_playing->setClickable(playback_begun);
   };
 
   switch(status) {
   case AudioPlayer::NoFileLoaded :
-    label_status->setText("No file loaded");
-    action_open->setEnabled(true);
-    button_open->setEnabled(true);
-    button_cancel->setEnabled(false);
-    button_play->setEnabled(false);
-    button_pause->setEnabled(false);
-    set_playback_actions(false);
+    set_controls("No file loaded", true, false, false, false, false);
     setWindowTitle(QStringLiteral("VPS Player"));
     label_loading_progress->clear();
     break;
   case AudioPlayer::Loading :
-    label_status->setText("Loading file");
-    action_open->setEnabled(false);
-    button_open->setEnabled(false);
-    button_cancel->setEnabled(true);
-    button_play->setEnabled(false);
-    button_pause->setEnabled(false);
-    set_playback_actions(false);
+    set_controls("Loading file", false, true, false, false, false);
     break;
   case AudioPlayer::Stopped :
-    label_status->setText("Stopped");
-    action_open->setEnabled(true);
-    button_open->setEnabled(true);
-    button_cancel->setEnabled(false);
-    button_play->setEnabled(true);
-    button_pause->setEnabled(false);
-    set_playback_actions(false);
+    set_controls("Stopped", true, false, false, true, false);
     break;
   case AudioPlayer::Paused :
-    label_status->setText("Paused");
-    action_open->setEnabled(true);
-    button_open->setEnabled(true);
-    button_cancel->setEnabled(false);
-    button_play->setEnabled(true);
-    button_pause->setEnabled(false);
-    set_playback_actions(true);
+    set_controls("Paused", true, false, true, true, false);
     break;
   case AudioPlayer::Playing :
-    label_status->setText("Playing");
-    action_open->setEnabled(true);
-    button_open->setEnabled(true);
-    button_cancel->setEnabled(false);
-    button_play->setEnabled(false);
-    button_pause->setEnabled(true);
-    set_playback_actions(true);
+    set_controls("Playing", true, false, true, false, true);
     break;
   }
 }
