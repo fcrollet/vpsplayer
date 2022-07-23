@@ -41,6 +41,7 @@ private:
   qreal output_volume;
   double time_ratio;
   double pitch_scale;
+  bool option_use_r3_engine;
   bool option_formant_preserved;
   bool option_high_quality;
   QAudioFormat target_format;
@@ -66,6 +67,7 @@ public:
   void resumePlaying(); // Resume audio playing
   void startPlaying(); // Start audio playing
   void stopPlaying(); // Stop audio playing
+  void updateOptionUseR3Engine(bool option); // Sets pitch shifting engine
   void updateOptionFormantPreserved(bool option); // Change "formant preserved" option
   void updateOptionHighQuality(bool option); // Change "high quality" option
   void updatePitch(int pitch); // Update pitch

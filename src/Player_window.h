@@ -10,6 +10,8 @@
 
 #include <QMainWindow>
 #include <QAction>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QFileInfo>
 #include <QIcon>
 #include <QLabel>
@@ -41,6 +43,8 @@ private:
   QSpinBox *spinbox_pitch;
   QLabel *label_speed_value;
   QLCDNumber *lcd_volume;
+  QComboBox *combobox_engine;
+  QCheckBox *check_high_quality;
   PlayingProgress *progress_playing;
   QLabel *label_reading_progress;
   QLabel *label_duration;

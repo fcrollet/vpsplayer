@@ -7,7 +7,6 @@
 
 #include <QtMath>
 #include <QAudio>
-#include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QFont>
@@ -101,12 +100,23 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   layout_sliders->addWidget(label_speed_value, 1, 2);
   layout_sliders->addWidget(lcd_volume, 2, 2);
 
-  QCheckBox *check_high_quality = new QCheckBox("High quality (uses more CPU)");
+  QLabel *label_engine = new QLabel("Engine");
+  combobox_engine = new QComboBox;
+  combobox_engine->addItem("Rubber Band R2 (faster)");
+  combobox_engine->addItem("Rubber Band R3 (finer)");
+  combobox_engine->setToolTip("R3 engine produces higher-quality results than the R2 engine for most material, especially complex mixes, vocals and other sounds that have soft onsets and smooth pitch changes, and music with substantial bass content. However, it uses much more CPU power than the R2 engine.");
+  QHBoxLayout *layout_engine = new QHBoxLayout;
+  layout_engine->addWidget(label_engine);
+  layout_engine->addWidget(combobox_engine);
+  layout_engine->addStretch();
+  
+  check_high_quality = new QCheckBox("High quality (uses more CPU)");
   check_high_quality->setToolTip("Use the highest quality method for pitch shifting. This method may use much more CPU, especially for large pitch shift.");
   QCheckBox *check_formant_preserved = new QCheckBox("Preserve formant shape (spectral envelope)");
   check_formant_preserved->setToolTip("Preserve the spectral envelope of the original signal. This permits shifting the note frequency without so substantially affecting the perceived pitch profile of the voice or instrument.");
   QVBoxLayout *layout_settings = new QVBoxLayout;
   layout_settings->addLayout(layout_sliders);
+  layout_settings->addLayout(layout_engine);
   layout_settings->addWidget(check_high_quality);
   layout_settings->addWidget(check_formant_preserved);
   QGroupBox *groupbox_settings = new QGroupBox("Settings");
@@ -166,6 +176,8 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   updateSpeed(0);
   slider_volume->setValue(100);
   updateVolume(100);
+  combobox_engine->setCurrentIndex(1);
+  audio_player->updateOptionUseR3Engine(true);
   check_high_quality->setChecked(true);
   audio_player->updateOptionHighQuality(true);
   check_formant_preserved->setChecked(true);
@@ -194,6 +206,7 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   connect(slider_pitch, &QAbstractSlider::valueChanged, this, &PlayerWindow::updatePitch);
   connect(slider_speed, &QAbstractSlider::valueChanged, this, &PlayerWindow::updateSpeed);
   connect(slider_volume, &QAbstractSlider::valueChanged, this, &PlayerWindow::updateVolume);
+  connect(combobox_engine, &QComboBox::currentIndexChanged, [this](int index){ audio_player->updateOptionUseR3Engine(index == 1); });
   connect(check_high_quality, &QAbstractButton::toggled, audio_player, &AudioPlayer::updateOptionHighQuality);
   connect(check_formant_preserved, &QAbstractButton::toggled, audio_player, &AudioPlayer::updateOptionFormantPreserved);
   connect(audio_player, &AudioPlayer::statusChanged, this, &PlayerWindow::updateStatus);
@@ -372,7 +385,7 @@ void PlayerWindow::updateSpeed(int speed)
 // Updates the window based on the player status
 void PlayerWindow::updateStatus(AudioPlayer::Status status)
 {
-  auto set_controls = [this](const QString &status_text, bool enable_open, bool decoding, bool playback_begun, bool enable_play, bool enable_pause) {
+  auto set_controls = [this](const QString &status_text, bool enable_open, bool decoding, bool playback_begun, bool enable_play, bool enable_pause, bool enable_options) {
     label_status->setText(status_text);
     action_open->setEnabled(enable_open);
     button_open->setEnabled(enable_open);
@@ -384,26 +397,28 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_fwd10->setEnabled(playback_begun);
     button_play->setEnabled(enable_play);
     button_pause->setEnabled(enable_pause);
+    combobox_engine->setEnabled(enable_options);
+    check_high_quality->setEnabled(enable_options);
     progress_playing->setClickable(playback_begun);
   };
 
   switch(status) {
   case AudioPlayer::NoFileLoaded :
-    set_controls("No file loaded", true, false, false, false, false);
+    set_controls("No file loaded", true, false, false, false, false, true);
     setWindowTitle(QStringLiteral("VPS Player"));
     label_loading_progress->clear();
     break;
   case AudioPlayer::Loading :
-    set_controls("Loading file", false, true, false, false, false);
+    set_controls("Loading file", false, true, false, false, false, false);
     break;
   case AudioPlayer::Stopped :
-    set_controls("Stopped", true, false, false, true, false);
+    set_controls("Stopped", true, false, false, true, false, true);
     break;
   case AudioPlayer::Paused :
-    set_controls("Paused", true, false, true, true, false);
+    set_controls("Paused", true, false, true, true, false, false);
     break;
   case AudioPlayer::Playing :
-    set_controls("Playing", true, false, true, false, true);
+    set_controls("Playing", true, false, true, false, true, false);
     break;
   }
 }

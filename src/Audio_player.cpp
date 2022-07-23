@@ -19,6 +19,7 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    output_volume(1.0),
 					    time_ratio(1.0),
 					    pitch_scale(1.0),
+					    option_use_r3_engine(true),
 					    option_formant_preserved(true),
 					    option_high_quality(true),
 					    target_format(QMediaDevices::defaultAudioOutput().preferredFormat())
@@ -200,6 +201,13 @@ void AudioPlayer::stopPlaying()
 }
 
 
+// Sets pitch shifting engine
+void AudioPlayer::updateOptionUseR3Engine(bool option)
+{
+  option_use_r3_engine = option;
+}
+
+
 // Change "formant preserved" option
 void AudioPlayer::updateOptionFormantPreserved(bool option)
 {
@@ -213,8 +221,6 @@ void AudioPlayer::updateOptionFormantPreserved(bool option)
 void AudioPlayer::updateOptionHighQuality(bool option)
 {
   option_high_quality = option;
-  if (status == AudioPlayer::Paused || status == AudioPlayer::Playing)
-    stretcher->setPitchOption(generateStretcherOptionsFlag());
 }
 
 
@@ -359,6 +365,8 @@ void AudioPlayer::finishDecoding()
 RubberBand::RubberBandStretcher::Options AudioPlayer::generateStretcherOptionsFlag() const
 {
   RubberBand::RubberBandStretcher::Options options = RubberBand::RubberBandStretcher::DefaultOptions | RubberBand::RubberBandStretcher::OptionProcessRealTime | RubberBand::RubberBandStretcher::OptionThreadingNever;
+  if (option_use_r3_engine)
+    options |= RubberBand::RubberBandStretcher::OptionEngineFiner;
   if (option_formant_preserved)
     options |= RubberBand::RubberBandStretcher::OptionFormantPreserved;
   if (option_high_quality)
