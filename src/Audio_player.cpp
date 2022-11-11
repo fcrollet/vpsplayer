@@ -354,6 +354,7 @@ void AudioPlayer::finishDecoding()
 
   emit loadingProgressChanged(100);
   disconnect(audio_decoder, 0, 0, 0);
+  emit durationChanged(static_cast<int>(audio_decoder->duration())); // QAudioDecoder bug workaround
   audio_decoder->deleteLater();
   status = AudioPlayer::Stopped;
   emit readingPositionChanged(0);
