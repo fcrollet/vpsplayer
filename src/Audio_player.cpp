@@ -191,10 +191,10 @@ void AudioPlayer::stopPlaying()
   emit statusChanged(status);
   emit readingPositionChanged(0);
 
-  disconnect(timer, 0, 0, 0);
+  disconnect(timer, nullptr, nullptr, nullptr);
   timer->deleteLater();
   audio_output->stop();
-  disconnect(audio_output, 0, 0, 0);
+  disconnect(audio_output, nullptr, nullptr, nullptr);
   audio_output->deleteLater();
   temp_buffer->deleteLater();
   stretcher.reset();
@@ -254,7 +254,7 @@ void AudioPlayer::updateVolume(qreal volume)
 // Abort audio file decoding
 void AudioPlayer::abortDecoding(QAudioDecoder::Error error)
 {
-  disconnect(audio_decoder, 0, 0, 0);
+  disconnect(audio_decoder, nullptr, nullptr, nullptr);
   audio_decoder->deleteLater();
   decoded_samples.reset();
   status = AudioPlayer::NoFileLoaded;
@@ -353,7 +353,7 @@ void AudioPlayer::finishDecoding()
   nb_audio_buffers = decoded_samples->size();
 
   emit loadingProgressChanged(100);
-  disconnect(audio_decoder, 0, 0, 0);
+  disconnect(audio_decoder, nullptr, nullptr, nullptr);
   emit durationChanged(static_cast<int>(audio_decoder->duration())); // QAudioDecoder bug workaround
   audio_decoder->deleteLater();
   status = AudioPlayer::Stopped;
