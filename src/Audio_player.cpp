@@ -70,10 +70,10 @@ void AudioPlayer::decodeFile(const QString &filename)
   audio_decoder->setAudioFormat(decode_format);
 
   connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
-  connect(audio_decoder, &QAudioDecoder::durationChanged, [this](qint64 duration){ emit durationChanged(static_cast<int>(duration)); });
+  connect(audio_decoder, &QAudioDecoder::durationChanged, [this](qint64 duration){ if (duration > 0) emit durationChanged(static_cast<int>(duration)); });
   connect(audio_decoder, &QAudioDecoder::finished, this, &AudioPlayer::finishDecoding);
   connect(audio_decoder, qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
-    
+  
   audio_decoder->start();
 }
 
@@ -354,7 +354,6 @@ void AudioPlayer::finishDecoding()
 
   emit loadingProgressChanged(100);
   disconnect(audio_decoder, nullptr, nullptr, nullptr);
-  emit durationChanged(static_cast<int>(audio_decoder->duration())); // QAudioDecoder bug workaround
   audio_decoder->deleteLater();
   status = AudioPlayer::Stopped;
   emit readingPositionChanged(0);
