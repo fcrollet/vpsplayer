@@ -68,11 +68,11 @@ void AudioPlayer::decodeFile(const QString &filename)
 
   decoded_samples = std::make_unique<QList<QAudioBuffer>>();
 
-  audio_decoder = new QAudioDecoder(this);
+  audio_decoder = std::make_unique<QAudioDecoder>();
   audio_decoder->setSource(QUrl::fromLocalFile(filename));
 
-  connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::firstDecodedBufferReady);
-  connect(audio_decoder, qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
+  connect(audio_decoder.get(), &QAudioDecoder::bufferReady, this, &AudioPlayer::firstDecodedBufferReady);
+  connect(audio_decoder.get(), qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
   
   audio_decoder->start();
 }
@@ -254,8 +254,8 @@ void AudioPlayer::updateVolume(qreal volume)
 // Abort audio file decoding
 void AudioPlayer::abortDecoding(QAudioDecoder::Error error)
 {
-  disconnect(audio_decoder, nullptr, nullptr, nullptr);
-  audio_decoder->deleteLater();
+  disconnect(audio_decoder.get(), nullptr, nullptr, nullptr);
+  audio_decoder.reset();
   decoded_samples.reset();
   status = AudioPlayer::NoFileLoaded;
   emit statusChanged(status);
@@ -353,8 +353,8 @@ void AudioPlayer::finishDecoding()
   nb_audio_buffers = decoded_samples->size();
 
   emit loadingProgressChanged(100);
-  disconnect(audio_decoder, nullptr, nullptr, nullptr);
-  audio_decoder->deleteLater();
+  disconnect(audio_decoder.get(), nullptr, nullptr, nullptr);
+  audio_decoder.reset();
   status = AudioPlayer::Stopped;
   emit readingPositionChanged(0);
   startPlaying();
@@ -368,8 +368,7 @@ void AudioPlayer::firstDecodedBufferReady()
   qDebug() << "File format:" << file_format;
   const QUrl file_url = audio_decoder->source();
   audio_decoder->stop();
-  disconnect(audio_decoder, nullptr, nullptr, nullptr);
-  delete audio_decoder;
+  disconnect(audio_decoder.get(), nullptr, nullptr, nullptr);
 
   target_format.setChannelCount(qBound(min_channel_count, file_format.channelCount(), max_channel_count));
   target_format.setSampleRate(qBound(min_sample_rate, file_format.sampleRate(), max_sample_rate));
@@ -381,17 +380,17 @@ void AudioPlayer::firstDecodedBufferReady()
   }
   qDebug() << "Output format:" << target_format;
 
-  audio_decoder = new QAudioDecoder(this);
+  audio_decoder = std::make_unique<QAudioDecoder>();
   audio_decoder->setSource(file_url);
 
   QAudioFormat decode_format(target_format);
   decode_format.setSampleFormat(QAudioFormat::Float);
   audio_decoder->setAudioFormat(decode_format);
   
-  connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
-  connect(audio_decoder, &QAudioDecoder::durationChanged, [this](qint64 duration){ if (duration > 0) emit durationChanged(static_cast<int>(duration)); });
-  connect(audio_decoder, &QAudioDecoder::finished, this, &AudioPlayer::finishDecoding);
-  connect(audio_decoder, qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
+  connect(audio_decoder.get(), &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
+  connect(audio_decoder.get(), &QAudioDecoder::durationChanged, [this](qint64 duration){ if (duration > 0) emit durationChanged(static_cast<int>(duration)); });
+  connect(audio_decoder.get(), &QAudioDecoder::finished, this, &AudioPlayer::finishDecoding);
+  connect(audio_decoder.get(), qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
 
   audio_decoder->start();
 }

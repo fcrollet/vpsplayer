@@ -51,7 +51,7 @@ private:
   int max_channel_count;
   int min_sample_rate;
   int max_sample_rate;
-  QAudioDecoder *audio_decoder;
+  std::unique_ptr<QAudioDecoder> audio_decoder;
   std::unique_ptr<QList<QAudioBuffer>> decoded_samples;
   qsizetype nb_audio_buffers;
   QAudioSink *audio_output;
