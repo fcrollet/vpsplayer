@@ -1,4 +1,4 @@
-// Copyright 2018-2022 François CROLLET
+// Copyright 2018-2023 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -12,6 +12,7 @@
 #include <memory>
 #include <QAudioBuffer>
 #include <QAudioDecoder>
+#include <QAudioDevice>
 #include <QAudioFormat>
 #include <QAudioSink>
 #include <QBuffer>
@@ -45,6 +46,11 @@ private:
   bool option_formant_preserved;
   bool option_high_quality;
   QAudioFormat target_format;
+  QAudioDevice audio_device;
+  int min_channel_count;
+  int max_channel_count;
+  int min_sample_rate;
+  int max_sample_rate;
   QAudioDecoder *audio_decoder;
   std::unique_ptr<QList<QAudioBuffer>> decoded_samples;
   qsizetype nb_audio_buffers;
@@ -78,6 +84,7 @@ private:
   void abortDecoding(QAudioDecoder::Error error); // Abort audio file decoding
   void fillAudioBuffer(); // Fill output audio buffer
   void finishDecoding(); // End audio file decoding
+  void firstDecodedBufferReady(); // Reads the first decoded buffer and sets audio format accordingly for further decoding
   RubberBand::RubberBandStretcher::Options generateStretcherOptionsFlag() const; // Returns options' flag that can be passed to the stretcher
   void manageAudioOutputState(QAudio::State state); // Handle changes of audio output's state
   void readDecoderBuffer(); // Read buffer from the decoder

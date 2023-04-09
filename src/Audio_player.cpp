@@ -1,4 +1,4 @@
-// Copyright 2018-2022 François CROLLET
+// Copyright 2018-2023 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -22,11 +22,16 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    option_use_r3_engine(true),
 					    option_formant_preserved(true),
 					    option_high_quality(true),
-					    target_format(QMediaDevices::defaultAudioOutput().preferredFormat())
+					    audio_device(QMediaDevices::defaultAudioOutput())
 {
-  target_format.setSampleFormat(QAudioFormat::Int16);
-  qDebug() << "Sample rate:" << target_format.sampleRate();
-  qDebug() << "Channel count:" << target_format.channelCount();
+  min_channel_count = audio_device.minimumChannelCount();
+  max_channel_count = audio_device.maximumChannelCount();
+  min_sample_rate = audio_device.minimumSampleRate();
+  max_sample_rate = audio_device.maximumSampleRate();
+  qDebug() << "Minimum channel_count:" << min_channel_count;
+  qDebug() << "Maximum channel count:" << max_channel_count;
+  qDebug() << "Minimum sample rate:" << min_sample_rate;
+  qDebug() << "Maximum sample rate:" << max_sample_rate;
 }
 
 
@@ -64,14 +69,9 @@ void AudioPlayer::decodeFile(const QString &filename)
   decoded_samples = std::make_unique<QList<QAudioBuffer>>();
 
   audio_decoder = new QAudioDecoder(this);
-  QAudioFormat decode_format(target_format);
-  decode_format.setSampleFormat(QAudioFormat::Float);
   audio_decoder->setSource(QUrl::fromLocalFile(filename));
-  audio_decoder->setAudioFormat(decode_format);
 
-  connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
-  connect(audio_decoder, &QAudioDecoder::durationChanged, [this](qint64 duration){ if (duration > 0) emit durationChanged(static_cast<int>(duration)); });
-  connect(audio_decoder, &QAudioDecoder::finished, this, &AudioPlayer::finishDecoding);
+  connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::firstDecodedBufferReady);
   connect(audio_decoder, qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
   
   audio_decoder->start();
@@ -160,7 +160,7 @@ void AudioPlayer::startPlaying()
   }
   stretcher->setMaxProcessSize(static_cast<size_t>(max_sample_count));
   
-  audio_output = new QAudioSink(target_format, this);
+  audio_output = new QAudioSink(audio_device, target_format, this);
   audio_output->setBufferSize(static_cast<qsizetype>(target_format.bytesForDuration(100000))); // Audio buffer size should correspond to about 100 ms.
   audio_output->setVolume(output_volume);
   timer = new QTimer(this);
@@ -358,6 +358,42 @@ void AudioPlayer::finishDecoding()
   status = AudioPlayer::Stopped;
   emit readingPositionChanged(0);
   startPlaying();
+}
+
+
+// Reads the first decoded buffer and sets audio format accordingly for further decoding
+void AudioPlayer::firstDecodedBufferReady()
+{
+  const QAudioFormat file_format = audio_decoder->read().format();
+  qDebug() << "File format:" << file_format;
+  const QUrl file_url = audio_decoder->source();
+  audio_decoder->stop();
+  disconnect(audio_decoder, nullptr, nullptr, nullptr);
+  delete audio_decoder;
+
+  target_format.setChannelCount(qBound(min_channel_count, file_format.channelCount(), max_channel_count));
+  target_format.setSampleRate(qBound(min_sample_rate, file_format.sampleRate(), max_sample_rate));
+  target_format.setSampleFormat(QAudioFormat::Int16);
+  if (!audio_device.isFormatSupported(target_format)) {
+    target_format = audio_device.preferredFormat();
+    target_format.setSampleFormat(QAudioFormat::Int16);
+    qDebug() << "Format not supported, falling back on default format";
+  }
+  qDebug() << "Output format:" << target_format;
+
+  audio_decoder = new QAudioDecoder(this);
+  audio_decoder->setSource(file_url);
+
+  QAudioFormat decode_format(target_format);
+  decode_format.setSampleFormat(QAudioFormat::Float);
+  audio_decoder->setAudioFormat(decode_format);
+  
+  connect(audio_decoder, &QAudioDecoder::bufferReady, this, &AudioPlayer::readDecoderBuffer);
+  connect(audio_decoder, &QAudioDecoder::durationChanged, [this](qint64 duration){ if (duration > 0) emit durationChanged(static_cast<int>(duration)); });
+  connect(audio_decoder, &QAudioDecoder::finished, this, &AudioPlayer::finishDecoding);
+  connect(audio_decoder, qOverload<QAudioDecoder::Error>(&QAudioDecoder::error), this, &AudioPlayer::abortDecoding);
+
+  audio_decoder->start();
 }
 
 
