@@ -54,6 +54,7 @@ private:
   std::unique_ptr<QAudioDecoder> audio_decoder;
   std::unique_ptr<QList<QAudioBuffer>> decoded_samples;
   qsizetype nb_audio_buffers;
+  unsigned int nb_channels;
   QAudioSink *audio_output;
   QIODevice *output_buffer;
   QBuffer *temp_buffer;

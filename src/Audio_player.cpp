@@ -148,7 +148,7 @@ void AudioPlayer::startPlaying()
   no_more_data = false;
 
   stretcher = std::make_unique<RubberBand::RubberBandStretcher>(static_cast<size_t>(target_format.sampleRate()),
-								static_cast<size_t>(target_format.channelCount()),
+								static_cast<size_t>(nb_channels),
 								generateStretcherOptionsFlag(),
 								time_ratio,
 								pitch_scale);
@@ -286,7 +286,6 @@ void AudioPlayer::fillAudioBuffer()
       const float *audio_buffer_data = current_audio_buffer.constData<float>();
       
       unsigned int nb_input_frames = static_cast<unsigned int>(current_audio_buffer.frameCount());
-      unsigned int nb_channels = static_cast<unsigned int>(target_format.channelCount());
       float **stretcher_input = new float*[nb_channels];
       for (unsigned int i = 0; i < nb_channels; i++){
 	stretcher_input[i] = new float[nb_input_frames];
@@ -351,6 +350,7 @@ void AudioPlayer::finishDecoding()
 {
   decoded_samples->squeeze();
   nb_audio_buffers = decoded_samples->size();
+  nb_channels = static_cast<unsigned int>(target_format.channelCount());
 
   emit loadingProgressChanged(100);
   disconnect(audio_decoder.get(), nullptr, nullptr, nullptr);
