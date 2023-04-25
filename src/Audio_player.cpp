@@ -66,8 +66,6 @@ void AudioPlayer::decodeFile(const QString &filename)
   emit readingPositionChanged(-1);
   emit loadingProgressChanged(0);
 
-  decoded_samples = std::make_unique<QList<QAudioBuffer>>();
-
   audio_decoder = new QAudioDecoder(this);
   audio_decoder->setSource(QUrl::fromLocalFile(filename));
 
@@ -254,13 +252,14 @@ void AudioPlayer::updateVolume(qreal volume)
 // Abort audio file decoding
 void AudioPlayer::abortDecoding(QAudioDecoder::Error error)
 {
+  status = AudioPlayer::NoFileLoaded;
+  audio_decoder->stop();
   disconnect(audio_decoder, nullptr, nullptr, nullptr);
   audio_decoder->deleteLater();
   decoded_samples.reset();
-  status = AudioPlayer::NoFileLoaded;
   emit statusChanged(status);
   emit durationChanged(-1);
-
+  
   if (error != QAudioDecoder::NoError) {
     qDebug() << "Error while decoding audio file:" << error;
     emit audioDecodingError(error);
@@ -348,6 +347,9 @@ void AudioPlayer::fillAudioBuffer()
 // End audio file decoding
 void AudioPlayer::finishDecoding()
 {
+  if (status != AudioPlayer::Loading)
+    return;
+  
   decoded_samples->squeeze();
   nb_audio_buffers = decoded_samples->size();
   nb_channels = static_cast<unsigned int>(target_format.channelCount());
@@ -369,7 +371,7 @@ void AudioPlayer::firstDecodedBufferReady()
   const QUrl file_url = audio_decoder->source();
   audio_decoder->stop();
   disconnect(audio_decoder, nullptr, nullptr, nullptr);
-  delete audio_decoder;
+  audio_decoder->deleteLater();
 
   target_format.setChannelCount(qBound(min_channel_count, file_format.channelCount(), max_channel_count));
   target_format.setSampleRate(qBound(min_sample_rate, file_format.sampleRate(), max_sample_rate));
@@ -380,6 +382,8 @@ void AudioPlayer::firstDecodedBufferReady()
     qDebug() << "Format not supported, falling back on default format";
   }
   qDebug() << "Output format:" << target_format;
+
+  decoded_samples = std::make_unique<QList<QAudioBuffer>>();
 
   audio_decoder = new QAudioDecoder(this);
   audio_decoder->setSource(file_url);
@@ -422,6 +426,8 @@ void AudioPlayer::manageAudioOutputState(QAudio::State state)
 // Read buffer from the decoder
 void AudioPlayer::readDecoderBuffer()
 {
-  decoded_samples->append(audio_decoder->read());
-  emit loadingProgressChanged(static_cast<int>((100 * audio_decoder->position()) / audio_decoder->duration()));
+  if (decoded_samples.get()) {
+    decoded_samples->append(audio_decoder->read());
+    emit loadingProgressChanged(static_cast<int>((100 * audio_decoder->position()) / audio_decoder->duration()));
+  }
 }
