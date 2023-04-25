@@ -91,7 +91,7 @@ private:
   void readDecoderBuffer(); // Read buffer from the decoder
   
 signals:
-  void audioDecodingError(QAudioDecoder::Error); // This signal is emitted if an error occurs while tring to decode audio file
+  void audioDecodingError(QAudioDecoder::Error); // This signal is emitted if an error occurs while trying to decode audio file
   void audioOutputError(QAudio::Error); // This signal is emitted if an error occurs while trying to access audio device
   void durationChanged(int); // This signal is emitted each time the total duration of the file changes. Parameter: duration in milliseconds (-1 if no valid audio file loaded)
   void loadingProgressChanged(int); // This signal is emitted to indicate the current loading progress. Parameter: progress between 0 and 100
