@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-wget -c https://breakfastquay.com/files/releases/rubberband-1.9.1.tar.bz2
-tar -xjf rubberband-1.9.1.tar.bz2
-mv rubberband-1.9.1 rubberband
-rm -f rubberband-1.9.1.tar.bz2

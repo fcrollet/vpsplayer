@@ -1,0 +1,58 @@
+#!/bin/bash
+
+QMAKE=/usr/x86_64-w64-mingw32/bin/qt6/qmake
+STRIP=x86_64-w64-mingw32-strip
+DLL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/bin
+QT_PLUGINS_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/qt6/plugins
+
+MAKE_OPTS="-j2"
+
+#=========================================================================
+
+set -e
+
+rm -rf rubberband
+rm -rf release
+wget -c https://breakfastquay.com/files/releases/rubberband-3.2.1.tar.bz2
+tar -xjf rubberband-3.2.1.tar.bz2
+mv rubberband-3.2.1 rubberband
+rm -f rubberband-3.2.1.tar.bz2
+
+$QMAKE -makefile vpsplayer-win.pro
+make $MAKE_OPTS
+cd release
+$STRIP --strip-unneeded vpsplayer.exe
+
+mkdir multimedia
+mkdir platforms
+mkdir styles
+
+cp $DLL_PATH/iconv.dll .
+cp $DLL_PATH/icudata72.dll .
+cp $DLL_PATH/icui18n72.dll .
+cp $DLL_PATH/icuuc72.dll .
+cp $DLL_PATH/libbz2-1.dll .
+cp $DLL_PATH/libfreetype-6.dll .
+cp $DLL_PATH/libgcc_s_seh-1.dll .
+cp $DLL_PATH/libglib-2.0-0.dll .
+cp $DLL_PATH/libharfbuzz-0.dll .
+cp $DLL_PATH/libintl-8.dll .
+cp $DLL_PATH/libpcre2-16-0.dll .
+cp $DLL_PATH/libpcre2-8-0.dll .
+cp $DLL_PATH/libpng16-16.dll .
+cp $DLL_PATH/libssp-0.dll .
+cp $DLL_PATH/libstdc++-6.dll .
+cp $DLL_PATH/libwinpthread-1.dll .
+cp $DLL_PATH/Qt6Core.dll .
+cp $DLL_PATH/Qt6Gui.dll .
+cp $DLL_PATH/Qt6Multimedia.dll .
+cp $DLL_PATH/Qt6Network.dll .
+cp $DLL_PATH/Qt6Widgets.dll .
+cp $DLL_PATH/zlib1.dll .
+cp $QT_PLUGINS_PATH/multimedia/windowsmediaplugin.dll multimedia/
+cp $QT_PLUGINS_PATH/platforms/qwindows.dll platforms/
+cp $QT_PLUGINS_PATH/styles/qwindowsvistastyle.dll styles/
+
+cd ..
+cp COPYING release/COPYING.txt
+cp icons/vps-64.ico release/
