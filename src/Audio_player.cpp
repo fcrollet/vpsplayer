@@ -160,18 +160,19 @@ void AudioPlayer::startPlaying()
   timer = new QTimer(this);
   timer->setInterval(10);
   temp_buffer = new QBuffer(this);
-  connect(timer, &QTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
   connect(audio_output, &QAudioSink::stateChanged, this, &AudioPlayer::manageAudioOutputState);
   output_buffer = audio_output->start();
   QAudio::Error error_status = audio_output->error();
-  if ((error_status == QAudio::NoError) || (error_status == QAudio::UnderrunError))
+  if ((error_status == QAudio::NoError) || (error_status == QAudio::UnderrunError)) {
     fillAudioBuffer();
+    connect(timer, &QTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
+    timer->start();
+  }
   else {
     qDebug() << "Error while opening audio device:" << error_status;
     emit audioOutputError(error_status);
     stopPlaying();
   }
-  timer->start();
 }
 
 
