@@ -12,6 +12,9 @@
 
 #include "Audio_player.h"
 
+#define RUBBERBAND_MIN_SAMPLERATE 8000
+#define RUBBERBAND_MAX_SAMPLERATE 192000
+
 
 // Constructor
 AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
@@ -26,8 +29,8 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 {
   min_channel_count = audio_device.minimumChannelCount();
   max_channel_count = audio_device.maximumChannelCount();
-  min_sample_rate = audio_device.minimumSampleRate();
-  max_sample_rate = audio_device.maximumSampleRate();
+  min_sample_rate = qMax(audio_device.minimumSampleRate(), RUBBERBAND_MIN_SAMPLERATE);
+  max_sample_rate = qMin(audio_device.maximumSampleRate(), RUBBERBAND_MAX_SAMPLERATE);
   qDebug() << "Minimum channel_count:" << min_channel_count;
   qDebug() << "Maximum channel count:" << max_channel_count;
   qDebug() << "Minimum sample rate:" << min_sample_rate;
