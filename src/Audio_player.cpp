@@ -25,12 +25,12 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    option_use_r3_engine(true),
 					    option_formant_preserved(true),
 					    option_high_quality(true),
-					    audio_device(QMediaDevices::defaultAudioOutput())
+					    audio_device(QMediaDevices::defaultAudioOutput()),
+					    min_channel_count(audio_device.minimumChannelCount()),
+					    max_channel_count(audio_device.maximumChannelCount()),
+					    min_sample_rate(qMax(audio_device.minimumSampleRate(), RUBBERBAND_MIN_SAMPLERATE)),
+					    max_sample_rate(qMin(audio_device.maximumSampleRate(), RUBBERBAND_MAX_SAMPLERATE))
 {
-  min_channel_count = audio_device.minimumChannelCount();
-  max_channel_count = audio_device.maximumChannelCount();
-  min_sample_rate = qMax(audio_device.minimumSampleRate(), RUBBERBAND_MIN_SAMPLERATE);
-  max_sample_rate = qMin(audio_device.maximumSampleRate(), RUBBERBAND_MAX_SAMPLERATE);
   qDebug() << "Minimum channel_count:" << min_channel_count;
   qDebug() << "Maximum channel count:" << max_channel_count;
   qDebug() << "Minimum sample rate:" << min_sample_rate;
