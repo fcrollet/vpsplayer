@@ -1,0 +1,28 @@
+#!/bin/bash
+
+QMAKE=~/devel/Qt/6.5.0/gcc_64/bin/qmake6
+
+MAKE_OPTS="-j1"
+
+#=========================================================================
+
+set -e
+
+rm -rf rubberband
+rm -rf appimage
+wget -c https://breakfastquay.com/files/releases/rubberband-3.2.1.tar.bz2
+tar -xjf rubberband-3.2.1.tar.bz2
+mv rubberband-3.2.1 rubberband
+rm -f rubberband-3.2.1.tar.bz2
+
+$QMAKE -makefile vpsplayer-appimage.pro
+make $MAKE_OPTS
+strip --strip-unneeded vpsplayer
+
+INSTALL_ROOT=appimage make install
+mkdir appimage/usr/lib
+
+cd appimage
+wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+chmod u+x linuxdeployqt-continuous-x86_64.AppImage
+VERSION="2.0" ./linuxdeployqt-continuous-x86_64.AppImage usr/share/applications/com.github.fcrollet.vpsplayer.desktop -appimage -qmake=$QMAKE -extra-plugins=multimedia
