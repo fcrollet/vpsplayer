@@ -6,7 +6,7 @@ QMAKE_LFLAGS_RELEASE+="-O2 -flto"
 CONFIG += qt warn_on release exceptions_off
 QT += widgets multimedia
 INCLUDEPATH += rubberband
-DEFINES += VERSION_STRING=\\\"2.0\\\"
+DEFINES += VERSION_STRING=\\\"2.0.1\\\"
 DEFINES += NO_EXCEPTIONS
 MOC_DIR = build_tmp
 OBJECTS_DIR = build_tmp
