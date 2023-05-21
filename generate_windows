@@ -32,6 +32,9 @@ cp $DLL_PATH/icudata72.dll .
 cp $DLL_PATH/icui18n72.dll .
 cp $DLL_PATH/icuuc72.dll .
 cp $DLL_PATH/libbz2-1.dll .
+cp $DLL_PATH/libcrypto-3-x64.dll .
+cp $DLL_PATH/libexpat-1.dll .
+cp $DLL_PATH/libfontconfig-1.dll .
 cp $DLL_PATH/libfreetype-6.dll .
 cp $DLL_PATH/libgcc_s_seh-1.dll .
 cp $DLL_PATH/libglib-2.0-0.dll .
