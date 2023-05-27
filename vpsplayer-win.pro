@@ -1,6 +1,6 @@
 TEMPLATE = app
 QMAKE_CXXFLAGS_RELEASE="-O2 -march=x86-64-v2 -fvisibility-inlines-hidden -pipe -fno-plt -g0 -flto"
-QMAKE_LFLAGS_RELEASE+="-O2 -flto"
+QMAKE_LFLAGS_RELEASE+="-O2 -march=x86-64-v2 -fvisibility-inlines-hidden -g0 -flto"
 CONFIG += qt warn_off release exceptions_off
 QT += widgets multimedia
 INCLUDEPATH += rubberband
