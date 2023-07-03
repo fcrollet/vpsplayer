@@ -29,7 +29,8 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    min_channel_count(audio_device.minimumChannelCount()),
 					    max_channel_count(audio_device.maximumChannelCount()),
 					    min_sample_rate(qMax(audio_device.minimumSampleRate(), RUBBERBAND_MIN_SAMPLERATE)),
-					    max_sample_rate(qMin(audio_device.maximumSampleRate(), RUBBERBAND_MAX_SAMPLERATE))
+					    max_sample_rate(qMin(audio_device.maximumSampleRate(), RUBBERBAND_MAX_SAMPLERATE)),
+					    float_output(audio_device.supportedSampleFormats().contains(QAudioFormat::Float))
 {
   qDebug() << "Minimum channel_count:" << min_channel_count;
   qDebug() << "Maximum channel count:" << max_channel_count;
@@ -249,6 +250,59 @@ void AudioPlayer::updateVolume(qreal volume)
 }
 
 
+// Converts a float sample to output format <qint16>
+template<>
+inline qint16 AudioPlayer::convertFloatSampleToOutputFormat<qint16>(float sample)
+{
+  if (sample > 1.0f)
+    return qint16(32767);
+  else if (sample < -1.0f)
+    return qint16(-32767);
+  else
+    return static_cast<qint16>(qRound(sample * 32767.0f));
+}
+
+
+// Converts a float sample to output format <float>
+template<>
+inline float AudioPlayer::convertFloatSampleToOutputFormat<float>(float sample)
+{
+  return sample;
+}
+
+
+// Retrieves the stretcher output and puts it into temp_buffer
+template<typename OUTPUT_FORMAT>
+void AudioPlayer::moveStretcherOutputToTempBuffer()
+{
+  unsigned int nb_output_frames = static_cast<unsigned int>(stretcher->available());
+
+  if (nb_output_frames > 0) {
+    temp_buffer->close();
+
+    float **stretcher_output = new float*[nb_channels];
+    for (unsigned int i = 0; i < nb_channels; i++)
+      stretcher_output[i] = new float[nb_output_frames];
+    nb_output_frames = static_cast<unsigned int>(stretcher->retrieve(stretcher_output, static_cast<size_t>(nb_output_frames)));
+
+    unsigned int nb_output_samples = nb_output_frames * nb_channels;
+    OUTPUT_FORMAT *output_samples = new OUTPUT_FORMAT[nb_output_samples];
+    for (unsigned int i = 0; i < nb_channels; i++){
+      for (unsigned int j = 0; j < nb_output_frames; j++)
+	output_samples[(nb_channels * j) + i] = convertFloatSampleToOutputFormat<OUTPUT_FORMAT>(stretcher_output[i][j]);
+      delete[] stretcher_output[i];
+    }
+    delete[] stretcher_output;
+
+    temp_buffer->setData(reinterpret_cast<char*>(output_samples), static_cast<int>(sizeof(OUTPUT_FORMAT) * nb_output_samples));
+    delete[] output_samples;
+ 
+    temp_buffer->open(QIODevice::ReadOnly);
+    temp_buffer->seek(0);
+  }
+}
+
+
 // Abort audio file decoding
 void AudioPlayer::abortDecoding(QAudioDecoder::Error error)
 {
@@ -296,39 +350,10 @@ void AudioPlayer::fillAudioBuffer()
 	delete[] stretcher_input[i];
       delete[] stretcher_input;
 
-      unsigned int nb_output_frames = static_cast<unsigned int>(stretcher->available());
-
-      if (nb_output_frames > 0) {
-	temp_buffer->close();
-	
-	float **stretcher_output = new float*[nb_channels];
-	for (unsigned int i = 0; i < nb_channels; i++)
-	  stretcher_output[i] = new float[nb_output_frames];
-	nb_output_frames = static_cast<unsigned int>(stretcher->retrieve(stretcher_output, static_cast<size_t>(nb_output_frames)));
-
-	unsigned int nb_output_samples = nb_output_frames * nb_channels;
-	qint16 *output_samples = new qint16[nb_output_samples];
-	for (unsigned int i = 0; i < nb_channels; i++){
-	  for (unsigned int j = 0; j < nb_output_frames; j++){
-	    float sample = stretcher_output[i][j];
-	    unsigned int index = (nb_channels * j) + i;
-	    if (sample > 1.0f)
-	      output_samples[index] = qint16(32767);
-	    else if (sample < -1.0f)
-	      output_samples[index] = qint16(-32767);
-	    else
-	      output_samples[index] = static_cast<qint16>(qRound(sample * 32767.0f));
-	  }
-	  delete[] stretcher_output[i];
-	}
-	delete[] stretcher_output;
-
-	temp_buffer->setData(reinterpret_cast<char*>(output_samples), static_cast<int>(sizeof(qint16) * nb_output_samples));
-	delete[] output_samples;
-      
-	temp_buffer->open(QIODevice::ReadOnly);
-	temp_buffer->seek(0);
-      }
+      if (float_output)
+	moveStretcherOutputToTempBuffer<float>();
+      else
+	moveStretcherOutputToTempBuffer<qint16>();
 
       emit readingPositionChanged(static_cast<int>(current_audio_buffer.startTime() / 1000));
     }
@@ -373,12 +398,13 @@ void AudioPlayer::firstDecodedBufferReady()
   disconnect(audio_decoder, nullptr, nullptr, nullptr);
   audio_decoder->deleteLater();
 
+  QAudioFormat::SampleFormat sample_format = float_output ? QAudioFormat::Float : QAudioFormat::Int16;
   target_format.setChannelCount(qBound(min_channel_count, file_format.channelCount(), max_channel_count));
   target_format.setSampleRate(qBound(min_sample_rate, file_format.sampleRate(), max_sample_rate));
-  target_format.setSampleFormat(QAudioFormat::Int16);
+  target_format.setSampleFormat(sample_format);
   if (!audio_device.isFormatSupported(target_format)) {
     target_format = audio_device.preferredFormat();
-    target_format.setSampleFormat(QAudioFormat::Int16);
+    target_format.setSampleFormat(sample_format);
     qDebug() << "Format not supported, falling back on default format";
   }
   qDebug() << "Output format:" << target_format;

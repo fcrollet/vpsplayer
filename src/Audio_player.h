@@ -51,6 +51,7 @@ private:
   int max_channel_count;
   int min_sample_rate;
   int max_sample_rate;
+  bool float_output;
   QAudioDecoder *audio_decoder;
   std::unique_ptr<QList<QAudioBuffer>> decoded_samples;
   qsizetype nb_audio_buffers;
@@ -82,6 +83,12 @@ public:
   void updateVolume(qreal volume); // Update output volume
 
 private:
+  template<typename OUTPUT_FORMAT>
+  inline OUTPUT_FORMAT convertFloatSampleToOutputFormat(float sample); // Converts a float sample to output format (qint16 or float)
+
+  template<typename OUTPUT_FORMAT>
+  void moveStretcherOutputToTempBuffer(); // Retrieves the stretcher output and puts it into temp_buffer
+
   void abortDecoding(QAudioDecoder::Error error); // Abort audio file decoding
   void fillAudioBuffer(); // Fill output audio buffer
   void finishDecoding(); // End audio file decoding
