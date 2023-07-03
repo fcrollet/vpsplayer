@@ -4,7 +4,7 @@ QMAKE_LFLAGS_RELEASE+="-O2 -march=x86-64-v2 -fvisibility-inlines-hidden -g0 -flt
 CONFIG += qt warn_off release exceptions_off
 QT += widgets multimedia
 INCLUDEPATH += rubberband
-DEFINES += VERSION_STRING=\\\"2.0.1\\\"
+DEFINES += VERSION_STRING=\\\"2.1\\\"
 DEFINES += NO_EXCEPTIONS
 MOC_DIR = build_tmp
 OBJECTS_DIR = build_tmp

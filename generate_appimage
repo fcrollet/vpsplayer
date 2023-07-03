@@ -24,4 +24,4 @@ INSTALL_ROOT=appimage make install
 cd appimage
 wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
 chmod u+x linuxdeployqt-continuous-x86_64.AppImage
-VERSION="2.0.1" ./linuxdeployqt-continuous-x86_64.AppImage usr/share/applications/com.github.fcrollet.vpsplayer.desktop -appimage -qmake=$QMAKE -extra-plugins=multimedia
+VERSION="2.1" ./linuxdeployqt-continuous-x86_64.AppImage usr/share/applications/com.github.fcrollet.vpsplayer.desktop -appimage -qmake=$QMAKE -extra-plugins=multimedia
