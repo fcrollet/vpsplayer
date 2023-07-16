@@ -254,12 +254,7 @@ void AudioPlayer::updateVolume(qreal volume)
 template<>
 inline qint16 AudioPlayer::convertFloatSampleToOutputFormat<qint16>(float sample)
 {
-  if (sample > 1.0f)
-    return qint16(32767);
-  else if (sample < -1.0f)
-    return qint16(-32767);
-  else
-    return static_cast<qint16>(qRound(sample * 32767.0f));
+  return static_cast<qint16>(qBound(-32767, qRound(sample * 32767.0f), 32767));
 }
 
 
