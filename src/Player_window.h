@@ -19,6 +19,8 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QString>
+#include <QDropEvent>
+#include <QDragEnterEvent.h>
 
 #include "Audio_player.h"
 #include "Playing_progress.h"
@@ -70,6 +72,9 @@ private:
   void updateSpeed(int speed); // Updates the speed
   void updateStatus(AudioPlayer::Status status); // Updates the window based on the player status
   void updateVolume(int volume); // Updates the volume
+protected:
+  void dragEnterEvent(QDragEnterEvent *e);
+  void dropEvent(QDropEvent *e);
 };
 
 #endif
