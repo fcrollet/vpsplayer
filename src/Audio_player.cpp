@@ -1,4 +1,4 @@
-// Copyright 2018-2023 François CROLLET
+// Copyright 2018-2024 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -161,15 +161,14 @@ void AudioPlayer::startPlaying()
   audio_output = new QAudioSink(audio_device, target_format, this);
   audio_output->setBufferSize(static_cast<qsizetype>(target_format.bytesForDuration(200000))); // Audio buffer size should correspond to about 200 ms.
   audio_output->setVolume(output_volume);
-  timer = new QTimer(this);
-  timer->setInterval(10);
+  timer = new QChronoTimer(std::chrono::nanoseconds(10000), this);
   temp_buffer = new QBuffer(this);
   connect(audio_output, &QAudioSink::stateChanged, this, &AudioPlayer::manageAudioOutputState);
   output_buffer = audio_output->start();
   QAudio::Error error_status = audio_output->error();
   if ((error_status == QAudio::NoError) || (error_status == QAudio::UnderrunError)) {
     fillAudioBuffer();
-    connect(timer, &QTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
+    connect(timer, &QChronoTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
     timer->start();
   }
   else {

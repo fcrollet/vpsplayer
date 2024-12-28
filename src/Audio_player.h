@@ -1,4 +1,4 @@
-// Copyright 2018-2023 François CROLLET
+// Copyright 2018-2024 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -16,11 +16,11 @@
 #include <QAudioFormat>
 #include <QAudioSink>
 #include <QBuffer>
+#include <QChronoTimer>
 #include <QIODevice>
 #include <QList>
 #include <QObject>
 #include <QString>
-#include <QTimer>
 
 
 class AudioPlayer : public QObject
@@ -62,7 +62,7 @@ private:
   qsizetype reading_index;
   bool no_more_data;
   std::unique_ptr<RubberBand::RubberBandStretcher> stretcher;
-  QTimer *timer;
+  QChronoTimer *timer;
   
 public:
   AudioPlayer(QObject *parent = nullptr); // Constructor

@@ -12,7 +12,7 @@ See COPYING in the same directory or [http://www.gnu.org/licenses/gpl.html](http
 
 ## Requirements
 
-* **Qt6** (version 6.2 or above; *core*, *gui*/*widgets* and *multimedia* modules): [https://www.qt.io](https://www.qt.io)
+* **Qt6** (version 6.8 or above; *core*, *gui*/*widgets* and *multimedia* modules): [https://www.qt.io](https://www.qt.io)
 * **Rubber Band** library (version 3.0 or above): [https://www.breakfastquay.com/rubberband/](https://www.breakfastquay.com/rubberband/)
 
 To build from source:
