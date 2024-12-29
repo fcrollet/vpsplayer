@@ -1,27 +1,27 @@
 #!/bin/bash
 
-QMAKE=~/devel/Qt/6.5.0/gcc_64/bin/qmake6
+export QMAKE=~/devel/Qt/6.8.1/gcc_64/bin/qmake6
 
-MAKE_OPTS="-j1"
+MAKE_OPTS="-j2"
 
 #=========================================================================
 
 set -e
 
 rm -rf rubberband
-rm -rf appimage
-wget -c https://breakfastquay.com/files/releases/rubberband-3.2.1.tar.bz2
-tar -xjf rubberband-3.2.1.tar.bz2
-mv rubberband-3.2.1 rubberband
-rm -f rubberband-3.2.1.tar.bz2
+rm -rf appdir_tmp
+
+wget -c https://breakfastquay.com/files/releases/rubberband-4.0.0.tar.bz2
+tar -xjf rubberband-4.0.0.tar.bz2
+mv rubberband-4.0.0 rubberband
+rm -f rubberband-4.0.0.tar.bz2
 
 $QMAKE -makefile vpsplayer-appimage.pro
 make $MAKE_OPTS
 strip --strip-unneeded vpsplayer
 
-INSTALL_ROOT=appimage make install
-
-cd appimage
-wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-chmod u+x linuxdeployqt-continuous-x86_64.AppImage
-VERSION="2.1" ./linuxdeployqt-continuous-x86_64.AppImage usr/share/applications/com.github.fcrollet.vpsplayer.desktop -appimage -qmake=$QMAKE -extra-plugins=multimedia
+wget -c https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+wget -c https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage
+wget -c https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+chmod u+x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-appimage-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
+VERSION="2.1" NO_STRIP=true ./linuxdeploy-x86_64.AppImage --executable=vpsplayer --desktop-file=com.github.fcrollet.vpsplayer.desktop --icon-file=icons/128x128/com.github.fcrollet.vpsplayer.png --output appimage --plugin qt --appdir=appdir_tmp
