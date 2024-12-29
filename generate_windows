@@ -13,10 +13,10 @@ set -e
 
 rm -rf rubberband
 rm -rf release
-wget -c https://breakfastquay.com/files/releases/rubberband-3.2.1.tar.bz2
-tar -xjf rubberband-3.2.1.tar.bz2
-mv rubberband-3.2.1 rubberband
-rm -f rubberband-3.2.1.tar.bz2
+wget -c https://breakfastquay.com/files/releases/rubberband-4.0.0.tar.bz2
+tar -xjf rubberband-4.0.0.tar.bz2
+mv rubberband-4.0.0 rubberband
+rm -f rubberband-4.0.0.tar.bz2
 
 $QMAKE -makefile vpsplayer-win.pro
 make $MAKE_OPTS
@@ -28,9 +28,9 @@ mkdir platforms
 mkdir styles
 
 cp $DLL_PATH/iconv.dll .
-cp $DLL_PATH/icudata72.dll .
-cp $DLL_PATH/icui18n72.dll .
-cp $DLL_PATH/icuuc72.dll .
+cp $DLL_PATH/icudata74.dll .
+cp $DLL_PATH/icui18n74.dll .
+cp $DLL_PATH/icuuc74.dll .
 cp $DLL_PATH/libbz2-1.dll .
 cp $DLL_PATH/libcrypto-3-x64.dll .
 cp $DLL_PATH/libexpat-1.dll .
@@ -43,7 +43,6 @@ cp $DLL_PATH/libintl-8.dll .
 cp $DLL_PATH/libpcre2-16-0.dll .
 cp $DLL_PATH/libpcre2-8-0.dll .
 cp $DLL_PATH/libpng16-16.dll .
-cp $DLL_PATH/libssp-0.dll .
 cp $DLL_PATH/libstdc++-6.dll .
 cp $DLL_PATH/libwinpthread-1.dll .
 cp $DLL_PATH/Qt6Core.dll .
@@ -54,7 +53,7 @@ cp $DLL_PATH/Qt6Widgets.dll .
 cp $DLL_PATH/zlib1.dll .
 cp $QT_PLUGINS_PATH/multimedia/windowsmediaplugin.dll multimedia/
 cp $QT_PLUGINS_PATH/platforms/qwindows.dll platforms/
-cp $QT_PLUGINS_PATH/styles/qwindowsvistastyle.dll styles/
+cp $QT_PLUGINS_PATH/styles/qmodernwindowsstyle.dll styles/
 
 cd ..
 cp COPYING release/COPYING.txt
