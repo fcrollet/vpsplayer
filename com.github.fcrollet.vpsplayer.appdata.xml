@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2019-2023 François CROLLET -->
+<!-- Copyright 2019-2025 François CROLLET -->
 <component type="desktop-application">
   <id>com.github.fcrollet.vpsplayer</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -23,6 +23,17 @@
   <developer_name>François CROLLET</developer_name>
   <update_contact>fcrollet_AT_gmail.com</update_contact>
   <releases>
+    <release version="2.1" date="2025-01-02">
+      <description>
+	<p>This release is a minor update:</p>
+	<ul>
+	  <li>Use floating point samples if the audio device supports it (keep falling back to 16 bit integers otherwise)</li>
+	  <li>Minor optimizations</li>
+	  <li>New AppImage package for Linux</li>
+	</ul>
+      </description>
+      <url>https://github.com/fcrollet/vpsplayer/releases/tag/v2.1</url>
+    </release>
     <release version="2.0" date="2023-05-01">
       <description>
 	<p>This release is a major update with many changes under the hood:</p>
