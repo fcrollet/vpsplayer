@@ -1,4 +1,4 @@
-// Copyright 2018-2022 François CROLLET
+// Copyright 2018-2025 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -86,6 +86,7 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   slider_volume->setTickInterval(100);
   spinbox_pitch = new QSpinBox;
   spinbox_pitch->setRange(-12, 12);
+  spinbox_pitch->setToolTip("semitones");
   label_speed_value = new QLabel;
   label_speed_value->setAlignment(Qt::AlignCenter);
   lcd_volume = new QLCDNumber(3);
