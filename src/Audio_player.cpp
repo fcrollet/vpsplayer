@@ -1,4 +1,4 @@
-// Copyright 2018-2024 François CROLLET
+// Copyright 2018-2025 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -319,9 +319,8 @@ void AudioPlayer::abortDecoding(QAudioDecoder::Error error)
 void AudioPlayer::fillAudioBuffer()
 {
   int bytes_needed = audio_output->bytesFree();
-  int bytes_processed = 0;
 
-  while (bytes_processed < bytes_needed) {
+  while (bytes_needed > 0) {
     while (temp_buffer->atEnd()){
       if (reading_index >= nb_audio_buffers) {
 	no_more_data = true;
@@ -352,9 +351,9 @@ void AudioPlayer::fillAudioBuffer()
       emit readingPositionChanged(static_cast<int>(current_audio_buffer.startTime() / 1000));
     }
 
-    qint64 size_to_write = qMin(temp_buffer->size() - temp_buffer->pos(), static_cast<qint64>(bytes_needed - bytes_processed));
+    qint64 size_to_write = qMin(temp_buffer->size() - temp_buffer->pos(), static_cast<qint64>(bytes_needed));
     qint64 actually_written = output_buffer->write(temp_buffer->read(size_to_write));
-    bytes_processed += static_cast<int>(actually_written);
+    bytes_needed -= static_cast<int>(actually_written);
     if (actually_written < size_to_write) { // Should not happen, but does happen on Windows 10!
       temp_buffer->seek(temp_buffer->pos() - size_to_write + actually_written);
       return;
