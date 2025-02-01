@@ -17,7 +17,7 @@ See COPYING in the same directory or [http://www.gnu.org/licenses/gpl.html](http
 
 To build from source:
 
-* a **C++17 compiler** (for instance GCC 9 or newer)
+* a **C++20 compiler** (for instance GCC 10 or newer)
 * [**pkg-config**](https://www.freedesktop.org/wiki/Software/pkg-config/) or [**pkgconf**](http://pkgconf.org/)
 * **qmake** (part of Qt6)
 
