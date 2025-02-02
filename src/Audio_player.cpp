@@ -423,7 +423,7 @@ void AudioPlayer::firstDecodedBufferReady()
 // Returns options' flag that can be passed to the stretcher
 RubberBand::RubberBandStretcher::Options AudioPlayer::generateStretcherOptionsFlag() const
 {
-  RubberBand::RubberBandStretcher::Options options = RubberBand::RubberBandStretcher::DefaultOptions | RubberBand::RubberBandStretcher::OptionProcessRealTime | RubberBand::RubberBandStretcher::OptionThreadingNever;
+  RubberBand::RubberBandStretcher::Options options = static_cast<RubberBand::RubberBandStretcher::Option>(RubberBand::RubberBandStretcher::DefaultOptions) | RubberBand::RubberBandStretcher::OptionProcessRealTime | RubberBand::RubberBandStretcher::OptionThreadingNever;
   if (option_use_r3_engine)
     options |= RubberBand::RubberBandStretcher::OptionEngineFiner;
   if (option_formant_preserved)
