@@ -7,6 +7,7 @@
 
 #include <QtMath>
 #include <QAudio>
+#include <QApplication>
 #include <QDir>
 #include <QFileDialog>
 #include <QFont>
@@ -37,19 +38,14 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   const QIcon forward_icon(QStringLiteral(":/forward-32.png"));
   const QFont fixed_font(QStringLiteral("monospace"));
   
-  QMenu *menu_file = menuBar()->addMenu("&File");
-  QMenu *menu_help = menuBar()->addMenu(QStringLiteral("&?"));
-  action_open = new QAction(open_icon, "&Open", this);
-  action_open->setShortcut(QKeySequence(QStringLiteral("Ctrl+O")));
-  QAction *action_quit = new QAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", this);
-  action_quit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
-  QAction *action_about = new QAction(app_icon, "&About", this);
-  QAction *action_about_qt = new QAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", this);
-  menu_file->addAction(action_open);
+  QMenuBar *menu_bar = menuBar();
+  QMenu *menu_file = menu_bar->addMenu("&File");
+  QMenu *menu_help = menu_bar->addMenu(QStringLiteral("&?"));
+  action_open = menu_file->addAction(open_icon, "&Open", QKeySequence(QStringLiteral("Ctrl+O")), this, &PlayerWindow::openFileFromSelector);
   menu_file->addSeparator();
-  menu_file->addAction(action_quit);
-  menu_help->addAction(action_about);
-  menu_help->addAction(action_about_qt);
+  menu_file->addAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", QKeySequence(QStringLiteral("Ctrl+Q")), this, &PlayerWindow::close);
+  menu_help->addAction(app_icon, "&About", this, &PlayerWindow::showAbout);
+  menu_help->addAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", qApp, &QApplication::aboutQt);
   
   label_status = new QLabel;
   label_loading_progress = new QLabel;
@@ -190,10 +186,6 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   adjustSize();
   setMaximumHeight(height());
 
-  connect(action_open, &QAction::triggered, this, &PlayerWindow::openFileFromSelector);
-  connect(action_quit, &QAction::triggered, this, &PlayerWindow::close);
-  connect(action_about, &QAction::triggered, this, &PlayerWindow::showAbout);
-  connect(action_about_qt, &QAction::triggered, [this](){ QMessageBox::aboutQt(this, "About Qt"); });
   connect(button_open, &QPushButton::clicked, this, &PlayerWindow::openFileFromSelector);
   connect(button_cancel, &QPushButton::clicked, audio_player, &AudioPlayer::cancelDecoding);
   connect(button_play, &QPushButton::clicked, this, &PlayerWindow::playAudio);
