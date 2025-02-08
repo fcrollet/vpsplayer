@@ -2,7 +2,7 @@ TEMPLATE = app
 CONFIG += qt warn_on release link_pkgconfig exceptions_off c++20
 QT += widgets multimedia
 PKGCONFIG += rubberband
-DEFINES += VERSION_STRING=\\\"2.1\\\"
+DEFINES += VERSION_STRING=\\\"2.1.1\\\"
 MOC_DIR = build_tmp
 OBJECTS_DIR = build_tmp
 RCC_DIR = build_tmp
