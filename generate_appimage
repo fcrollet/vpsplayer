@@ -23,5 +23,6 @@ strip --strip-unneeded vpsplayer
 wget -c https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 wget -c https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage
 wget -c https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
-chmod u+x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-appimage-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
-VERSION="2.1.1" NO_STRIP=true ./linuxdeploy-x86_64.AppImage --executable=vpsplayer --desktop-file=com.github.fcrollet.vpsplayer.desktop --icon-file=icons/128x128/com.github.fcrollet.vpsplayer.png --output appimage --plugin qt --appdir=appdir_tmp
+wget -c https://github.com/darealshinji/linuxdeploy-plugin-checkrt/releases/download/continuous/linuxdeploy-plugin-checkrt.sh
+chmod u+x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-appimage-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage linuxdeploy-plugin-checkrt.sh
+VERSION="2.1.1" NO_STRIP=true ./linuxdeploy-x86_64.AppImage --executable=vpsplayer --desktop-file=com.github.fcrollet.vpsplayer.desktop --icon-file=icons/128x128/com.github.fcrollet.vpsplayer.png --output appimage --plugin checkrt --plugin qt --appdir=appdir_tmp
