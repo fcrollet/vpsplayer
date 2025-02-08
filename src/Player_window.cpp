@@ -50,8 +50,9 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   label_status = new QLabel;
   label_loading_progress = new QLabel;
   label_loading_progress->setFont(fixed_font);
-  statusBar()->addWidget(label_status, 1);
-  statusBar()->addPermanentWidget(label_loading_progress, 0);
+  QStatusBar *status_bar = statusBar();
+  status_bar->addWidget(label_status, 1);
+  status_bar->addPermanentWidget(label_loading_progress, 0);
   
   QLabel *label_pitch = new QLabel("Pitch");
   label_pitch->setAlignment(Qt::AlignRight);
