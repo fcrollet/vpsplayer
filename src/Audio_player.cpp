@@ -49,7 +49,7 @@ AudioPlayer::~AudioPlayer()
 // Cancel current file decoding
 void AudioPlayer::cancelDecoding()
 {
-  if (status != AudioPlayer::Loading)
+  if (status != AudioPlayer::Loading) [[unlikely]]
     return;
 
   abortDecoding(QAudioDecoder::NoError);
@@ -59,7 +59,7 @@ void AudioPlayer::cancelDecoding()
 // Decode an audio file
 void AudioPlayer::decodeFile(const QString &filename)
 {
-  if (status == AudioPlayer::Loading)
+  if (status == AudioPlayer::Loading) [[unlikely]]
     return;
   
   if ((status == AudioPlayer::Paused) || (status == AudioPlayer::Playing))
@@ -90,7 +90,7 @@ AudioPlayer::Status AudioPlayer::getStatus() const
 // Move reading position. Parameter: position in milliseconds
 void AudioPlayer::moveReadingPosition(int position)
 {
-  if ((status != AudioPlayer::Playing) && (status != AudioPlayer::Paused))
+  if ((status != AudioPlayer::Playing) && (status != AudioPlayer::Paused)) [[unlikely]]
     return;
   
   reading_index = 0;
@@ -109,7 +109,7 @@ void AudioPlayer::moveReadingPosition(int position)
 // Pause audio playing
 void AudioPlayer::pausePlaying()
 {
-  if (status != AudioPlayer::Playing)
+  if (status != AudioPlayer::Playing) [[unlikely]]
     return;
 
   status = AudioPlayer::Paused;
@@ -122,7 +122,7 @@ void AudioPlayer::pausePlaying()
 // Resume audio playing
 void AudioPlayer::resumePlaying()
 {
-  if (status != AudioPlayer::Paused)
+  if (status != AudioPlayer::Paused) [[unlikely]]
     return;
 
   status = AudioPlayer::Playing;
@@ -136,7 +136,7 @@ void AudioPlayer::resumePlaying()
 // Start audio playing
 void AudioPlayer::startPlaying()
 {
-  if (status != AudioPlayer::Stopped)
+  if (status != AudioPlayer::Stopped) [[unlikely]]
     return;
 
   status = AudioPlayer::Playing;
@@ -182,7 +182,7 @@ void AudioPlayer::startPlaying()
 // Stop audio playing
 void AudioPlayer::stopPlaying()
 {
-  if ((status != AudioPlayer::Playing) && (status != AudioPlayer::Paused))
+  if ((status != AudioPlayer::Playing) && (status != AudioPlayer::Paused)) [[unlikely]]
     return;
 
   status = AudioPlayer::Stopped;
@@ -365,7 +365,7 @@ void AudioPlayer::fillAudioBuffer()
 // End audio file decoding
 void AudioPlayer::finishDecoding()
 {
-  if (status != AudioPlayer::Loading)
+  if (status != AudioPlayer::Loading) [[unlikely]]
     return;
   
   decoded_samples->squeeze();
@@ -445,7 +445,7 @@ void AudioPlayer::manageAudioOutputState(QAudio::State state)
 // Read buffer from the decoder
 void AudioPlayer::readDecoderBuffer()
 {
-  if (decoded_samples.get()) {
+  if (decoded_samples.get()) [[likely]] {
     decoded_samples->append(audio_decoder->read());
     emit loadingProgressChanged(static_cast<int>((100 * audio_decoder->position()) / audio_decoder->duration()));
   }
