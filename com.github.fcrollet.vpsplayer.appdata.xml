@@ -23,6 +23,12 @@
   <developer_name>François CROLLET</developer_name>
   <update_contact>fcrollet_AT_gmail.com</update_contact>
   <releases>
+    <release version="2.1.1" date="2025-03-02">
+      <description>
+	<p>This release is a minor update with small improvements.</p>
+      </description>
+      <url>https://github.com/fcrollet/vpsplayer/releases/tag/v2.1.1</url>
+    </release>
     <release version="2.1" date="2025-01-02">
       <description>
 	<p>This release is a minor update:</p>
