@@ -23,6 +23,9 @@
 #include <QStatusBar>
 #include <QStringList>
 #include <QVBoxLayout>
+#include <QMimeData>
+#include <QMimeDatabase>
+#include <QDragEnterEvent>
 
 #include "Player_window.h"
 #include "tools.h"
@@ -186,6 +189,7 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   
   adjustSize();
   setMaximumHeight(height());
+  setAcceptDrops(true);
 
   connect(button_open, &QPushButton::clicked, this, &PlayerWindow::openFileFromSelector);
   connect(button_cancel, &QPushButton::clicked, audio_player, &AudioPlayer::cancelDecoding);
@@ -227,13 +231,31 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   }
 }
 
-
 // Destructor
 PlayerWindow::~PlayerWindow()
 {
   
 }
 
+void PlayerWindow::dragEnterEvent(QDragEnterEvent *e){
+    if (e->mimeData()->hasUrls())
+    {
+        QMimeDatabase mimeDb;
+        QMimeType type = mimeDb.mimeTypeForUrl(e->mimeData()->urls()[0]);
+        if (type.name().startsWith("audio"))
+        {
+            e->acceptProposedAction();
+            return;
+        }
+    e->ignore();
+    }
+}
+
+void PlayerWindow::dropEvent(QDropEvent *e)
+{
+    QFileInfo file(e->mimeData()->urls()[0].path());
+    openFile(file);
+}
 
 // Prompt an error popup for an audio decoding error
 void PlayerWindow::displayAudioDecodingError(QAudioDecoder::Error error)
