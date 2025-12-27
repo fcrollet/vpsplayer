@@ -28,9 +28,9 @@ mkdir platforms
 mkdir styles
 
 cp $DLL_PATH/iconv.dll .
-cp $DLL_PATH/icudata74.dll .
-cp $DLL_PATH/icui18n74.dll .
-cp $DLL_PATH/icuuc74.dll .
+cp $DLL_PATH/icudata76.dll .
+cp $DLL_PATH/icui18n76.dll .
+cp $DLL_PATH/icuuc76.dll .
 cp $DLL_PATH/libbz2-1.dll .
 cp $DLL_PATH/libcrypto-3-x64.dll .
 cp $DLL_PATH/libexpat-1.dll .
