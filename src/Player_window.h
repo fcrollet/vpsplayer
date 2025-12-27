@@ -45,6 +45,7 @@ private:
   QLCDNumber *lcd_volume;
   QComboBox *combobox_engine;
   QCheckBox *check_high_quality;
+  QCheckBox *check_channels_together;
   PlayingProgress *progress_playing;
   QLabel *label_reading_progress;
   QLabel *label_duration;

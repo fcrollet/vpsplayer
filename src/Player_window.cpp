@@ -112,11 +112,14 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   check_high_quality->setToolTip("Use the highest quality method for pitch shifting. This method may use much more CPU, especially for large pitch shift.");
   QCheckBox *check_formant_preserved = new QCheckBox("Preserve formant shape (spectral envelope)");
   check_formant_preserved->setToolTip("Preserve the spectral envelope of the original signal. This permits shifting the note frequency without so substantially affecting the perceived pitch profile of the voice or instrument.");
+  check_channels_together = new QCheckBox("Process channels together");
+  check_channels_together->setToolTip("If this option is disabled, all channels are processed individually, which provides the highest quality for the individual channels at the expense of synchronisation, with a more diffuse stereo image and an unnatural increase in \"width\".\nEnabling it provides higher synchronisation at some expense of individual fidelity. In particular, a stretcher processing two channels will treat its input as a stereo pair and aim to maximise clarity at the centre. This gives relatively less stereo space and width, as well as slightly lower fidelity for individual channel content, but the results may be more appropriate for many situations making use of stereo mixes.");
   QVBoxLayout *layout_settings = new QVBoxLayout;
   layout_settings->addLayout(layout_sliders);
   layout_settings->addLayout(layout_engine);
   layout_settings->addWidget(check_high_quality);
   layout_settings->addWidget(check_formant_preserved);
+  layout_settings->addWidget(check_channels_together);
   QGroupBox *groupbox_settings = new QGroupBox("Settings");
   groupbox_settings->setLayout(layout_settings);
   
@@ -180,6 +183,8 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   audio_player->updateOptionHighQuality(true);
   check_formant_preserved->setChecked(true);
   audio_player->updateOptionFormantPreserved(true);
+  check_channels_together->setChecked(false);
+  audio_player->updateOptionChannelsTogether(false);
   updateStatus(audio_player->getStatus());
   updateReadingPosition(-1);
   updateDuration(-1);
@@ -393,6 +398,7 @@ void PlayerWindow::updateStatus(AudioPlayer::Status status)
     button_pause->setEnabled(enable_pause);
     combobox_engine->setEnabled(enable_options);
     check_high_quality->setEnabled(enable_options);
+    check_channels_together->setEnabled(enable_options);
     progress_playing->setClickable(playback_begun);
   };
 

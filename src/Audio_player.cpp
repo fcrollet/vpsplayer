@@ -25,6 +25,7 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    option_use_r3_engine(true),
 					    option_formant_preserved(true),
 					    option_high_quality(true),
+					    option_channels_together(false),
 					    audio_device(QMediaDevices::defaultAudioOutput()),
 					    min_channel_count(audio_device.minimumChannelCount()),
 					    max_channel_count(audio_device.maximumChannelCount()),
@@ -219,6 +220,13 @@ void AudioPlayer::updateOptionFormantPreserved(bool option)
 void AudioPlayer::updateOptionHighQuality(bool option)
 {
   option_high_quality = option;
+}
+
+
+// Change "process channels together" option
+void AudioPlayer::updateOptionChannelsTogether(bool option)
+{
+  option_channels_together = option;
 }
 
 
@@ -430,6 +438,8 @@ RubberBand::RubberBandStretcher::Options AudioPlayer::generateStretcherOptionsFl
     options |= RubberBand::RubberBandStretcher::OptionFormantPreserved;
   if (option_high_quality)
     options |= RubberBand::RubberBandStretcher::OptionPitchHighQuality;
+  if (option_channels_together)
+    options |= RubberBand::RubberBandStretcher::OptionChannelsTogether;
   return options;
 }
 

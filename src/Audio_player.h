@@ -45,6 +45,7 @@ private:
   bool option_use_r3_engine;
   bool option_formant_preserved;
   bool option_high_quality;
+  bool option_channels_together;
   QAudioFormat target_format;
   QAudioDevice audio_device;
   int min_channel_count;
@@ -78,6 +79,7 @@ public:
   void updateOptionUseR3Engine(bool option); // Sets pitch shifting engine
   void updateOptionFormantPreserved(bool option); // Change "formant preserved" option
   void updateOptionHighQuality(bool option); // Change "high quality" option
+  void updateOptionChannelsTogether(bool option); // Change "process channels together" option
   void updatePitch(int pitch); // Update pitch
   void updateSpeed(double speed_ratio); // Update speed
   void updateVolume(qreal volume); // Update output volume
