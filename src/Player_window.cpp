@@ -1,4 +1,4 @@
-// Copyright 2018-2025 François CROLLET
+// Copyright 2018-2026 François CROLLET
 
 // This file is part of VPS Player.
 // VPS Player is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -33,9 +33,9 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
 {
   audio_player = new AudioPlayer(this);
 
-  const QIcon open_icon(QStringLiteral(":/open-32.png"));
-  const QIcon backward_icon(QStringLiteral(":/backward-32.png"));
-  const QIcon forward_icon(QStringLiteral(":/forward-32.png"));
+  const QIcon open_icon = QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen);
+  const QIcon backward_icon = QIcon::fromTheme(QIcon::ThemeIcon::MediaSeekBackward);
+  const QIcon forward_icon = QIcon::fromTheme(QIcon::ThemeIcon::MediaSeekForward);
   const QFont fixed_font(QStringLiteral("monospace"));
   
   QMenuBar *menu_bar = menuBar();
@@ -43,9 +43,9 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   QMenu *menu_help = menu_bar->addMenu(QStringLiteral("&?"));
   action_open = menu_file->addAction(open_icon, "&Open", QKeySequence(QStringLiteral("Ctrl+O")), this, &PlayerWindow::openFileFromSelector);
   menu_file->addSeparator();
-  menu_file->addAction(QIcon(QStringLiteral(":/quit-32.png")), "&Quit", QKeySequence(QStringLiteral("Ctrl+Q")), this, &PlayerWindow::close);
+  menu_file->addAction(QIcon::fromTheme(QIcon::ThemeIcon::WindowClose), "&Quit", QKeySequence(QStringLiteral("Ctrl+Q")), this, &PlayerWindow::close);
   menu_help->addAction(app_icon, "&About", this, &PlayerWindow::showAbout);
-  menu_help->addAction(QIcon(QStringLiteral(":/qt-32.png")), "About Q&t", qApp, &QApplication::aboutQt);
+  menu_help->addAction(QIcon(QStringLiteral(":/qt-project.org/qmessagebox/images/qtlogo-64.png")), "About Q&t", qApp, &QApplication::aboutQt);
   
   label_status = new QLabel;
   label_loading_progress = new QLabel;
@@ -125,10 +125,10 @@ PlayerWindow::PlayerWindow(const QIcon &app_icon, const QString &filename)
   
   button_open = new QPushButton(open_icon, "Open file");
   button_open->setToolTip(QStringLiteral("Ctrl+O"));
-  button_cancel = new QPushButton(QIcon(QStringLiteral(":/cancel-32.png")), "Cancel");
-  button_play = new QPushButton(QIcon(QStringLiteral(":/play-32.png")), "Play");
-  button_pause = new QPushButton(QIcon(QStringLiteral(":/pause-32.png")), "Pause");
-  button_stop = new QPushButton(QIcon(QStringLiteral(":/stop-32.png")), "Stop");
+  button_cancel = new QPushButton(QIcon::fromTheme(QIcon::ThemeIcon::ProcessStop), "Cancel");
+  button_play = new QPushButton(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStart), "Play");
+  button_pause = new QPushButton(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackPause), "Pause");
+  button_stop = new QPushButton(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStop), "Stop");
   QHBoxLayout *layout_buttons = new QHBoxLayout;
   layout_buttons->addWidget(button_open);
   layout_buttons->addWidget(button_cancel);

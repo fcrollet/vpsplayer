@@ -1,14 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file alias="vps-64.png">icons/64x64/com.github.fcrollet.vpsplayer.png</file>
-    <file alias="qt-32.png">icons/qt-32.png</file>
-    <file alias="open-32.png">icons/open-32.png</file>
-    <file alias="cancel-32.png">icons/cancel-32.png</file>
-    <file alias="play-32.png">icons/play-32.png</file>
-    <file alias="pause-32.png">icons/pause-32.png</file>
-    <file alias="stop-32.png">icons/stop-32.png</file>
-    <file alias="forward-32.png">icons/forward-32.png</file>
-    <file alias="backward-32.png">icons/backward-32.png</file>
-    <file alias="quit-32.png">icons/quit-32.png</file>
 </qresource>
 </RCC>
