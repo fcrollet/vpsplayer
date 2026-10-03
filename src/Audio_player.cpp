@@ -167,7 +167,7 @@ void AudioPlayer::startPlaying()
   connect(audio_output, &QAudioSink::stateChanged, this, &AudioPlayer::manageAudioOutputState);
   output_buffer = audio_output->start();
   QAudio::Error error_status = audio_output->error();
-  if ((error_status == QAudio::NoError) || (error_status == QAudio::UnderrunError)) {
+  if (error_status == QAudio::NoError) {
     fillAudioBuffer();
     connect(timer, &QChronoTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
     timer->start();
